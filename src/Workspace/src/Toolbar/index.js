@@ -37,7 +37,7 @@ const RenderButton = (props) => {
         onClick={() => {
 
           const name = props.item.name;
-          if (name === 'brightness' || name === 'contrast' || name === 'inverse') {
+          if (name === 'brightness' || name === 'contrast') {
            setShowSlider(show => !show);
           }
          return props.item.onClick ? props.item.onClick : props.onClickItem(props.item)}

@@ -810,7 +810,7 @@ export default (state: MainLayoutState, action: Action) => {
     }
    
     case "UPDATE_FILTER": {
-
+        
       // return setIn(state, ["zoomOut"], !state.zoomOut)
       const filter = getIn( state,
         [...pathToActiveImage, "filter"])
@@ -824,9 +824,17 @@ export default (state: MainLayoutState, action: Action) => {
         
     }
     case "SELECT_TOOL": {
-      // if (action.selectedTool === "zoom-in") {
-      //   return setIn(state, ["zoomIn"], !state.zoomIn)
-      // }
+      if(action.selectedTool === 'inverse') {
+       const filter = getIn( state,
+        [...pathToActiveImage, "filter"])
+       
+      return  setIn(
+        state,
+        [...pathToActiveImage, "filter"],
+        {...filter,invert: filter.invert == 0 ? 100:0}
+      )      
+      }
+    
        if (action.selectedTool === "zoom-in") {
         return setIn(state, ["zoomOut"], !state.zoomOut)
       }

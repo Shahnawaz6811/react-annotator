@@ -73,7 +73,7 @@ export const IconSidebar = ({
 
         return (
           <Tooltip key={item.name}  title={item.helperText} placement="right">
-            <RenderButton activeImage={activeImage} handleSlide={(e) =>onFilterValueUpdate({name:e.target.ariaLabel,value:e.target.ariaValueNow})} NameIcon={NameIcon} item={item} onClickItem={onClickItem} selectedTools={selectedTools}/>
+            <RenderButton activeImage={activeImage} handleSlide={(e) =>onFilterValueUpdate({name:e.target.ariaLabel,value:e.target.value})} NameIcon={NameIcon} item={item} onClickItem={onClickItem} selectedTools={selectedTools}/>
           </Tooltip>
         )
       })}

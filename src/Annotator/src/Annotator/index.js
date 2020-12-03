@@ -63,8 +63,9 @@ export const Annotator = ({
     "create-polygon",
     "create-expanding-line",
     "show-mask",
+    "free-hand"
   ],
-  selectedTool = "select",
+  selectedTool = "create-polygon",
   regionTagList = [],
   regionClsList = [],
   imageTagList = [],
@@ -110,10 +111,12 @@ export const Annotator = ({
       regionClsList,
       regionTagList,
       imageClsList,
+
       imageTagList,
       currentVideoTime: videoTime,
       enabledTools,
       history: [],
+      historyCache:{},
       videoName,
       keypointDefinitions,
       ...(annotationType === "image"

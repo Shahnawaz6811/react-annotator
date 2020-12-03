@@ -1,6 +1,6 @@
 import React from "react"
 import { styled } from "@material-ui/core/styles"
-import Footer from "../Header"
+import Footer from "../Footer"
 import TopSidebar from "../Toolbar"
 import LeftSidebar from "../LeftSidebar"
 import WorkContainer from "../WorkContainer"
@@ -23,11 +23,11 @@ const Container = styled("div")({
   display: "flex",
   width: "80%",
   flexDirection: "column",
-  paddingTop: '60px',
+  padding: '0 30px',
   height: "100vh",
+  margin:'0 auto',
   overflow: "hidden",
   border: '2px solid green',
-  margin: '0 auto'
 })
 const SidebarsAndContent = styled("div")({
   display: "flex",
@@ -40,32 +40,39 @@ export default ({
   style = emptyObj,
   iconSidebarItems = emptyAr,
   selectedTools = ["select"],
-  headerItems = emptyAr,
+  footerItems = emptyAr,
   rightSidebarItems = emptyAr,
-  onClickHeaderItem,
+  onClickFooterItem,
   onFilterValueUpdate,
   onClickIconSidebarItem,
   activeImage,
+  state,
+  onSelectLabel,
+  onChangeLabel,
+  onSelectObject,
+  onDeleteObject,
+  onChangeObject,
   headerLeftSide = null,
   iconDictionary = emptyObj,
   children,
 }) => {
+  // console.log('Right',rightSidebarItems)
   const [workContainerRef, workContainerSize] = useDimensions()
   return (
     <IconDictionaryContext.Provider value={iconDictionary}>
+      <div style={{display:'flex'}}>
       <Container style={style}>
-
+      
         <SidebarsAndContent>
+         {/* {rightSidebarItems} */}
           {rightSidebarItems.length === 0 ? null : (
-            <LeftSidebar height={workContainerSize.height || 0}>
-              {/* {rightSidebarItems} */}
-              <div style={{height:'300px'}}>
-              <h4 style={{color:'red',margin:'10px'}}>Labels</h4>
-              </div>
-              <div style={{height:'300px',borderTop:'1px solid gray'}}>
-              <h4 style={{color:'red',margin:'10px'}}>Objects</h4>
-              </div>
-            </LeftSidebar>
+              <LeftSidebar state={state}
+                onSelectLabel={onSelectLabel}
+                onDeleteObject={onDeleteObject}
+                onChangeLabel={onChangeLabel}
+                onChangeObject={onChangeObject}
+                onSelectObject={onSelectObject}
+                height={workContainerSize.height || 0}> </LeftSidebar>
           )}
           <RightWorkContainer>
             {iconSidebarItems.length === 0 ? null : (
@@ -79,15 +86,19 @@ export default ({
             )}
             <WorkContainer ref={workContainerRef}>{children}</WorkContainer>
             <Footer
+            state={state}
           leftSideContent={headerLeftSide}
-          onClickItem={onClickHeaderItem}
-          items={headerItems}
+          onClickItem={onClickFooterItem}
+          items={footerItems}
         />
           </RightWorkContainer>
 
         </SidebarsAndContent>
         
       </Container>
+      </div>
+
+      
     </IconDictionaryContext.Provider>
   )
 }

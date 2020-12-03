@@ -8,7 +8,7 @@ const TransformGrabber = styled("div")({
   width: 8,
   height: 8,
   zIndex: 2,
-  border: "2px solid #FFF",
+  border: "2px solid red",
   position: "absolute",
 })
 
@@ -112,15 +112,16 @@ export const RegionSelectAndTransformBox = memo(
                   key={i}
                   {...mouseEvents}
                   onMouseDown={(e) => {
+                    console.log('Poly')
                     if (e.button === 0 && (!r.open || i === 0))
                       return onBeginMovePolygonPoint(r, i)
                     mouseEvents.onMouseDown(e)
                   }}
                   style={{
-                    cursor: !r.open ? "move" : i === 0 ? "pointer" : undefined,
+                    cursor: "pointer",
                     zIndex: 10,
                     pointerEvents:
-                      r.open && i === r.points.length - 1 ? "none" : undefined,
+                     i === r.points.length - 1 ? "none" : undefined,
                     left: proj.x - 4,
                     top: proj.y - 4,
                   }}
@@ -137,7 +138,8 @@ export const RegionSelectAndTransformBox = memo(
             r.points
               .map((p1, i) => [p1, r.points[(i + 1) % r.points.length]])
               .map(([p1, p2]) => [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2])
-              .map((pa, i) => {
+            .map((pa, i) => {
+              console.log("Polyy");
                 const proj = mat
                   .clone()
                   .inverse()
@@ -147,15 +149,21 @@ export const RegionSelectAndTransformBox = memo(
                     key={i}
                     {...mouseEvents}
                     onMouseDown={(e) => {
-                      if (e.button === 0) return onAddPolygonPoint(r, pa, i + 1)
+                      // console.log("i: ", i);
+                      if (e.button === 0) {
+                        console.log("Resizeee");
+                        return onAddPolygonPoint(r, pa, i + 1)
+                      } else {
+                        console.log("Nott");
+                      }
                       mouseEvents.onMouseDown(e)
                     }}
                     style={{
-                      cursor: "copy",
+                      cursor: "pointer",
                       zIndex: 10,
                       left: proj.x - 4,
                       top: proj.y - 4,
-                      border: "2px dotted #fff",
+                      border: "4px dotted blue",
                       opacity: 0.5,
                     }}
                   />

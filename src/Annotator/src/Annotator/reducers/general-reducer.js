@@ -1,7 +1,7 @@
 // @flow
 import type { MainLayoutState, Action } from "../../MainLayout/types"
 import { moveRegion } from "../../ImageCanvas/region-tools.js"
-import { getIn, setIn, updateIn } from "seamless-immutable"
+import Immutable,{ getIn, setIn, updateIn } from "seamless-immutable"
 import moment from "moment"
 import isEqual from "lodash/isEqual"
 import getActiveImage from "./get-active-image"
@@ -15,7 +15,7 @@ import getLandmarksWithTransform from "../../utils/get-landmarks-with-transform"
 
 const getRandomId = () => Math.random().toString().split(".")[1]
 
-export default (state: MainLayoutState, action: Action) => {
+const generalReducer = (state, action) => {
   if (
     state.allowedArea &&
     state.selectedTool !== "modify-allowed-area" &&
@@ -119,15 +119,29 @@ export default (state: MainLayoutState, action: Action) => {
 
   switch (action.type) {
     case "@@INIT": {
-      return state
+      return setIn(state, ['initState'], state);
     }
     case "SELECT_IMAGE": {
       return setNewImage(action.image, action.imageIndex)
     }
+    
+    case 'SELECT_LABEL': {
+      // console.log("State: ", state);
+      const selectedLabel = action.selectedLabel;
+      // console.log(selectedLabel);
+      return setIn(
+        state,
+        ['images', state.selectedImage, 'label'],selectedLabel
+      )
+    }
+
     case "CHANGE_REGION": {
+      // console.log("ActionRegion:", action.region);
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
       const oldRegion = activeImage.regions[regionIndex]
+      // console.log('OldRegion,', oldRegion);
+      // console.log('NewRegion,', action.region);
       if (oldRegion.cls !== action.region.cls) {
         state = saveToHistory(state, "Change Region Classification")
         const clsIndex = state.regionClsList.indexOf(action.region.cls)
@@ -187,7 +201,10 @@ export default (state: MainLayoutState, action: Action) => {
       }
     }
     case "BEGIN_MOVE_POLYGON_POINT": {
+
       const { polygon, pointIndex } = action
+      console.log('Pindex: ', polygon);
+
       state = closeEditors(state)
       if (
         state.mode &&
@@ -202,9 +219,10 @@ export default (state: MainLayoutState, action: Action) => {
           ["mode"],
           null
         )
-      } else {
-        state = saveToHistory(state, "Move Polygon Point")
       }
+      // else {
+      //   state = saveToHistory(state, "Move Polygon Point")
+      // }
       return setIn(state, ["mode"], {
         mode: "MOVE_POLYGON_POINT",
         regionId: polygon.id,
@@ -224,6 +242,7 @@ export default (state: MainLayoutState, action: Action) => {
     case "ADD_POLYGON_POINT": {
       const { polygon, point, pointIndex } = action
       const regionIndex = getRegionIndex(polygon)
+      console.log("regionIndex", regionIndex);
       if (regionIndex === null) return state
       const points = [...polygon.points]
       points.splice(pointIndex, 0, point)
@@ -358,6 +377,7 @@ export default (state: MainLayoutState, action: Action) => {
           })
         }
         case "DRAW_POLYGON": {
+          console.log('Draw pol')
           const { regionId } = state.mode
           const [region, regionIndex] = getRegion(regionId)
           if (!region) return setIn(state, ["mode"], null)
@@ -432,8 +452,9 @@ export default (state: MainLayoutState, action: Action) => {
       if (!activeImage) return state
       const { x, y } = action
 
-      state = setIn(state, ["mouseDownAt"], { x, y })
 
+      state = setIn(state, ["mouseDownAt"], { x, y })
+      
       if (state.mode) {
         switch (state.mode.mode) {
           case "DRAW_POLYGON": {
@@ -498,15 +519,18 @@ export default (state: MainLayoutState, action: Action) => {
       }
 
       let newRegion
-      let defaultRegionCls = undefined,
-        defaultRegionColor = "#ff0000"
-      if (activeImage && (activeImage.regions || []).length > 0) {
-        defaultRegionCls = activeImage.regions.slice(-1)[0].cls
-        const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
-        if (clsIndex !== -1) {
-          defaultRegionColor = colors[clsIndex % colors.length]
-        }
+      if (!activeImage.label) {
+        return state;
       }
+      let defaultRegionCls = activeImage.label.cls,
+        defaultRegionColor = activeImage.label.color
+      // if (activeImage && (activeImage.regions || []).length > 0) {
+      //   defaultRegionCls = activeImage.regions.slice(-1)[0].cls
+      //   const clsIndex = (state.regionClsList || []).indexOf(defaultRegionCls)
+      //   if (clsIndex !== -1) {
+      //     defaultRegionColor = colors[clsIndex % colors.length]
+      //   }
+      // }
 
       switch (state.selectedTool) {
         case "create-point": {
@@ -548,6 +572,7 @@ export default (state: MainLayoutState, action: Action) => {
           break
         }
         case "polygon": {
+
           if (state.mode && state.mode.mode === "DRAW_POLYGON") break
           state = saveToHistory(state, "Create Polygon")
           newRegion = {
@@ -556,7 +581,7 @@ export default (state: MainLayoutState, action: Action) => {
               [x, y],
               [x, y],
             ],
-            open: true,
+            open: false,
             highlighted: true,
             color: defaultRegionColor,
             cls: defaultRegionCls,
@@ -656,6 +681,7 @@ export default (state: MainLayoutState, action: Action) => {
         case "MOVE_REGION":
         case "RESIZE_KEYPOINTS":
         case "MOVE_POLYGON_POINT": {
+          console.log("Moveee")
           return { ...state, mode: null }
         }
         case "MOVE_KEYPOINT": {
@@ -665,6 +691,7 @@ export default (state: MainLayoutState, action: Action) => {
           return state
         }
         case "DRAW_EXPANDING_LINE": {
+          console.log("Drawinggg");
           const [expandingLine, regionIndex] = getRegion(state.mode.regionId)
           if (!expandingLine) return state
           let newExpandingLine = expandingLine
@@ -709,6 +736,14 @@ export default (state: MainLayoutState, action: Action) => {
           return state
       }
     }
+
+    case "UPDATE_IMAGE_CANVAS": {
+      return setNewImage(
+        state.images[action.payload.position],
+        action.payload.position
+      )
+    }
+
     case "OPEN_REGION_EDITOR": {
       const { region } = action
       const regionIndex = getRegionIndex(action.region)
@@ -756,6 +791,94 @@ export default (state: MainLayoutState, action: Action) => {
     case "HEADER_BUTTON_CLICKED": {
       const buttonName = action.buttonName.toLowerCase()
       switch (buttonName) {
+        case "undo": {
+          console.log("Original State: ", state);
+          // Check if current image has active regions to undo
+          if (activeImage.regions && activeImage.regions.length > 0) {
+            // const lastRegionAddedToActiveImage = activeImage.regions[];
+
+            // get last region inserted to active image
+           let lastRegionAddedToActiveImage = getIn(state,
+            [...pathToActiveImage, "regions",activeImage.regions.length - 1])
+            // console.log('lastRegionAddedToActiveImage: ', lastRegionAddedToActiveImage);
+            // const currentRegions = Immutable.asMutable(activeImage.regions.splice(-1,1))
+
+            //Remove last region inserted to active image
+            state = 
+            setIn(state,[...pathToActiveImage, "regions"], activeImage.regions.filter((element, index) => index < activeImage.regions.length - 1))
+
+            // console.log("After removing regions:", state);  
+            
+             // Cache last active image region to historyCache
+            let historyCacheForActiveImage = getIn(state, ['historyCache', activeImage.name]);
+            if (historyCacheForActiveImage) {
+              historyCacheForActiveImage = Immutable.asMutable(historyCacheForActiveImage);
+              historyCacheForActiveImage.push(lastRegionAddedToActiveImage)
+            } else {
+              historyCacheForActiveImage = [];
+              historyCacheForActiveImage.push(lastRegionAddedToActiveImage)
+            }
+            state =  setIn(state, ['historyCache', activeImage.name], historyCacheForActiveImage);
+            // historyCache[activeImage.name] = 
+            console.log("Cachinggg", state);
+            // state = setIn(state, ['historyCache'], state.historyCache.length], lastRegionAddedToActiveImage);
+            console.log('HistoryCahce', historyCacheForActiveImage);
+            
+            //  state = setIn(state, ['historyCache',state.historyCache.length], currentStateToCache);
+            console.log("State after caching current state :", state);
+
+          }
+          return state;
+        }
+        case "redo": {
+          console.log('redo: ');
+          // Check if we have regions in cache  to redo
+          if (state.historyCache && state.historyCache[activeImage.name] && state.historyCache[activeImage.name].length > 0) {
+            
+            // get last item inserted to history cache
+            // let lastRegionAddedToCache = getIn(state,
+            //   ["historyCache", state.historyCache.length - 1]);
+            let lastRegionAddedToCache = state.historyCache[activeImage.name][state.historyCache[activeImage.name].length - 1];
+
+            // remove last item from history cache.
+            state = 
+            setIn(state,['historyCache',activeImage.name], state.historyCache[activeImage.name].filter((element, index) => index < state.historyCache[activeImage.name].length - 1))
+
+            // console.log("lastRegionAddedToCache", lastRegionAddedToCache)
+            // redo active image regions with last item popped from history cache
+            state = 
+            setIn(state,[...pathToActiveImage, "regions",activeImage.regions.length],  lastRegionAddedToCache)
+            // return state.historyCache[0];
+            // console.log("After redoing regions ", state);
+           
+          }
+          return state;
+          
+        }
+        case 'reset': {
+          console.log('Before reset: ', state);
+          if (activeImage.regions && activeImage.regions.length > 0) {
+            let historyCacheForActiveImage = getIn(state, ['historyCache', activeImage.name]);
+            if (historyCacheForActiveImage && historyCacheForActiveImage.length > 0) {
+             // clear history cache for current image.
+            state = 
+              setIn(state,['historyCache',activeImage.name], [])
+            }
+            state = 
+              setIn(state,['historyCache',activeImage.name], activeImage.regions)
+
+            state = 
+              setIn(state,
+                [...pathToActiveImage, "regions"],
+                [])
+          }
+          
+            // state = setIn(state.history[state.history.length - 1].state, ['history'], []);
+            console.log("After reset", state);
+          
+      
+          return state;
+        }
         case "prev": {
           if (currentImageIndex === null) return state
           if (currentImageIndex === 0) return state
@@ -772,6 +895,7 @@ export default (state: MainLayoutState, action: Action) => {
             currentImageIndex + 1
           )
         }
+        
         case "clone": {
           if (currentImageIndex === null) return state
           if (currentImageIndex === state.images.length - 1) return state
@@ -807,31 +931,43 @@ export default (state: MainLayoutState, action: Action) => {
         default:
           return state
       }
+      break;
     }
    
     case "UPDATE_FILTER": {
         
       // return setIn(state, ["zoomOut"], !state.zoomOut)
-      const filter = getIn( state,
+      // console.log('Action:',action.payload.value);
+      let filter = getIn( state,
         [...pathToActiveImage, "filter"])
+        if(!filter){
+          filter = {};
+          // filter['brightness'] = action.payload.value;
+       }
+      //  console.log('Payliad: ',filter);
+
       const newState =  setIn(
         state,
         [...pathToActiveImage, "filter"],
-        {...filter,[action.payload.name === 'inverse'? 'invert':action.payload.name]: action.payload.value}
+        {...filter,[action.payload.name]: action.payload.value}
       )
 
       return newState;
         
     }
     case "SELECT_TOOL": {
+      console.log("Action,", action);
       if(action.selectedTool === 'inverse') {
-       const filter = getIn( state,
+       let filter = getIn( state,
         [...pathToActiveImage, "filter"])
-       
+       if(!filter){
+         filter = {};
+         filter.inverse = 0;
+       }
       return  setIn(
         state,
         [...pathToActiveImage, "filter"],
-        {...filter,invert: filter.invert == 0 ? 100:0}
+        {...filter,inverse: filter.inverse == 0 ? 100:0}
       )      
       }
     
@@ -891,3 +1027,6 @@ export default (state: MainLayoutState, action: Action) => {
   }
   return state
 }
+
+
+export default generalReducer;

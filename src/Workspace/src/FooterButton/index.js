@@ -38,7 +38,6 @@ const ButtonInnerContent = styled("div")({
 const IconContainer = styled("div")({})
 const Text = styled("div")({
   fontWeight: "bold",
-  lineHeight: 1,
   height: 28,
   display: "flex",
   alignItems: "center",

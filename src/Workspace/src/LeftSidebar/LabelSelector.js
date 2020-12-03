@@ -14,11 +14,9 @@ import UnlockIcon from "@material-ui/icons/LockOpen"
 import VisibleIcon from "@material-ui/icons/Visibility"
 import VisibleOffIcon from "@material-ui/icons/VisibilityOff"
 import styles from "./styles"
-import LabelSelector from './LabelSelector';
-import ObjectSelector from './ObjectSelector';
-
 import classnames from "classnames"
 const useStyles = makeStyles(styles)
+
 const colors = ['red','green','blue','pink','violet','indigo','black']
 
 const Chip = ({ color, text }) => {
@@ -93,9 +91,9 @@ const MemoRowHeader = memo(RowHeader)
 const Row = ({
   region: r,
   highlighted,
-  onSelectRegion,
+  onSelectLabel,
   onDeleteRegion,
-  onChangeRegion,
+  onChangeLabel,
   visible,
   selected,
   locked,
@@ -110,7 +108,7 @@ const Row = ({
       key={Math.random()}
       highlighted={selected}
       onClick={() => {
-        onSelectRegion(r)
+        onSelectLabel(r)
       }}
 
       classification={<Chip text={r.cls || ""} color={r.color || "#ddd"} />}
@@ -120,7 +118,7 @@ const Row = ({
         r.locked ? (
           <LockIcon
             onClick={() =>
-              onChangeRegion({
+                onChangeLabel({
                 ...r,
                 edit:true,
                 locked: r.shouldHideDeleteIcon
@@ -134,7 +132,7 @@ const Row = ({
           />
         ) : (
           <UnlockIcon
-            onClick={() => onChangeRegion({ ...r, locked: true })}
+            onClick={() => onChangeLabel({ ...r, locked: true })}
             className="icon2"
           />
         )
@@ -207,11 +205,9 @@ const MemoRow = memo(
 )
 
 
-export const LeftSidebar = ({ state,children, onDeleteObject,
-  onChangeLabel,
-  onSelectLabel,
-  onChangeObject,
-  onSelectObject,
+export const RightSidebar = ({ state,
+    onSelectLabel,
+    onChangeLabel,
   expandedByDefault,
    initialExpandedState, height }) => {
   const [expanded, toggleExpanded] = useReducer(
@@ -230,18 +226,28 @@ export const LeftSidebar = ({ state,children, onDeleteObject,
   const containerStyle = useMemo(() => ({ height: height || "100%" }), [height])
 
   return (
-    <Container>
-      <InnerSliderContent>
-        {/* Lables */}
-         <LabelSelector state={state} onChangeLabel={onChangeLabel}
-          onSelectLabel={onSelectLabel} />
-        <ObjectSelector state={state}  onSelectObject={onSelectObject}
-                onDeleteObject={onDeleteObject}
-                onChangeObject={onChangeObject}/>
-      
-        </InnerSliderContent>      
-    </Container>
+
+          <div style={{height:'300px'}}>
+              <h4 style={{color:'red',margin:'10px'}}>Labels</h4>
+          {state.regionClsList.map((r, i) => {
+              const label = state.images[state.selectedImage].label
+              let selected;
+              if (label && label.cls === r.cls) {
+                  selected = true;
+              }
+              return (
+                  <MemoRow
+                      key={Math.random()}
+                      {...r}
+                      selected={selected}
+                      region={r}
+                      index={i}
+                      onChangeLabel={onChangeLabel}
+                      onSelectLabel={onSelectLabel}
+                  />)
+          })}
+        </div>
   )
 }
 
-export default LeftSidebar
+export default RightSidebar

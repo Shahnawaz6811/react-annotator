@@ -85,17 +85,20 @@ export const SidebarBox = ({
         <Typography className={classes.title}>
           {title} <span>{subTitle}</span>
         </Typography>
-        <IconButton onClick={toggleExpanded} className={classes.expandButton}>
+        {/* <IconButton onClick={toggleExpanded} className={classes.expandButton}>
           <ExpandIcon className={classnames("icon", expanded && "expanded")} />
-        </IconButton>
+        </IconButton> */}
       </div>
-      {noScroll ? (
+      {
+        content
+      }
+      {/* {noScroll ? (
         expanded ? (
           content
         ) : null
       ) : (
         <Collapse in={expanded}>{content}</Collapse>
-      )}
+      )} */}
     </Paper>
   )
 }

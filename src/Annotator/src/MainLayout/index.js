@@ -149,6 +149,7 @@ export const MainLayout = ({
           ? state.selectedImageFrameTime
           : state.currentVideoTime
       }
+      selectedTool={state.selectedTool}
       keypointDefinitions={state.keypointDefinitions}
       onMouseMove={action("MOUSE_MOVE")}
       onMouseDown={action("MOUSE_DOWN")}
@@ -189,28 +190,44 @@ const onClickIconSidebarItem = useEventCallback((item) => {
   // console.log('item ', mouseEvents, item);
   if (mouseEvents) {
     if (item.name === 'zoom-in') {
-      mouseEvents.onWheel({deltaY:-1})
+      mouseEvents.onWheel({deltaY:-0.25})
     } else if(item.name === 'zoom-out'){
-      mouseEvents.onWheel({deltaY:1})
-
+      mouseEvents.onWheel({deltaY:0.25})
     }
   }
   
     dispatch({ type: "SELECT_TOOL", selectedTool: item.name })
   })
 
-const onClickHeaderItem = useEventCallback((item) => {
-  // console.log('item ', item);
-  if (item.name == 'Undo') {
-    action("RESTORE_HISTORY")();
-  } else if (item.name === 'zoom') {
 
-   }
-  else if (item.name === "Fullscreen") {
-      fullScreenHandle.enter()
-    } else if (item.name === "Window") {
-      fullScreenHandle.exit()
-    }
+const onSelectLabel = useEventCallback((r) => {
+  // console.log('R: ', r);
+  dispatch({ type: "SELECT_LABEL", selectedLabel: r })
+})
+const onChangeObject = useEventCallback((r) => {
+  // console.log('R: ', r);
+  dispatch({ type: "CHANGE_REGION", region: r })
+})
+
+const onSelectObject = useEventCallback((r) => {
+    // console.log('R: ', r);
+    dispatch({ type: "SELECT_REGION", region: r })
+})
+const onDeleteObject = useEventCallback((r) => {
+  // console.log('R: ', r);
+  dispatch({ type: "SELECT_LABEL", selectedLabel: r })
+})
+const onChangeLabel = useEventCallback((r) => {
+  // console.log('R: ', r);
+  dispatch({ type: "SELECT_LABEL", selectedLabel: r })
+})
+
+
+
+
+
+const onClickFooterItem = useEventCallback((item) => {
+  
     dispatch({ type: "HEADER_BUTTON_CLICKED", buttonName: item.name })
   })
 
@@ -222,8 +239,14 @@ const onClickHeaderItem = useEventCallback((item) => {
     <FullScreenContainer>    
           <Workspace
             iconDictionary={iconDictionary}
-            activeImage={activeImage}
-            headerItems={[
+        activeImage={activeImage}
+        onSelectLabel={onSelectLabel}
+        onDeleteObject={onDeleteObject}
+                onChangeLabel={onChangeLabel}
+                onChangeObject={onChangeObject}
+                onSelectObject={onSelectObject}
+            state={state}
+            footerItems={[
               { name: "Prev" },
               { name: "Next" },
               { name: "Undo" },
@@ -238,7 +261,7 @@ const onClickHeaderItem = useEventCallback((item) => {
               // state.fullScreen ? { name: "Window" } : { name: "Fullscreen" },
               // { name: "Save" },
             ].filter(Boolean)}
-            onClickHeaderItem={onClickHeaderItem}
+            onClickFooterItem={onClickFooterItem}
         onClickIconSidebarItem={onClickIconSidebarItem}
         onFilterValueUpdate={(filter)=>dispatch({type:'UPDATE_FILTER',payload:filter})}
             selectedTools={[
@@ -285,7 +308,7 @@ const onClickHeaderItem = useEventCallback((item) => {
               },
               {
                 name: "draw",
-                helperText: "Draw",
+                helperText: "Free Hand",
                 alwaysShowing: true,
               },
               // {
@@ -311,47 +334,54 @@ const onClickHeaderItem = useEventCallback((item) => {
                 (a) => a.alwaysShowing || state.enabledTools.includes(a.name)
               )}
             rightSidebarItems={[
-              debugModeOn && (
-                <DebugBox state={debugModeOn} lastAction={state.lastAction} />
-              ),
-              state.taskDescription && (
-                <TaskDescription description={state.taskDescription} />
-              ),
-              state.labelImages && (
-                <TagsSidebarBox
-                  currentImage={activeImage}
-                  imageClsList={state.imageClsList}
-                  imageTagList={state.imageTagList}
-                  onChangeImage={action("CHANGE_IMAGE", "delta")}
-                  expandedByDefault
-                />
-              ),
-              // (state.images?.length || 0) > 1 && (
-              //   <ImageSelector
-              //     onSelect={action("SELECT_REGION", "region")}
-              //     images={state.images}
+              // debugModeOn && (
+              //   <DebugBox state={debugModeOn} lastAction={state.lastAction} />
+              // ),
+              // state.taskDescription && (
+              //   <TaskDescription description={state.taskDescription} />
+              // ),
+              // state.labelImages && (
+              //   <TagsSidebarBox
+              //     currentImage={activeImage}
+              //     imageClsList={state.imageClsList}
+              //     imageTagList={state.imageTagList}
+              //     onChangeImage={action("CHANGE_IMAGE", "delta")}
+              //     expandedByDefault
               //   />
               // ),
-              <RegionSelector
-                regions={activeImage ? activeImage.regions : emptyArr}
-                onSelectRegion={action("SELECT_REGION", "region")}
-                onDeleteRegion={action("DELETE_REGION", "region")}
-                onChangeRegion={action("CHANGE_REGION", "region")}
-              />,
-              state.keyframes && (
-                <KeyframesSelector
-                  onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
-                  onDeleteKeyframe={action("DELETE_KEYFRAME", "time")}
-                  onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
-                  currentTime={state.currentVideoTime}
-                  duration={state.videoDuration}
-                  keyframes={state.keyframes}
+((state.images && state.images.length) || 0) > 1 && (
+                <ImageSelector
+                key={3}
+                  state={state}
+                  onSelect={(img, position) => {
+                    dispatch({
+                      type: "UPDATE_IMAGE_CANVAS",
+                      payload: { img, position },
+                    })
+                  }}
+                  images={state.images}
                 />
               ),
-              <HistorySidebarBox
-                history={state.history}
-                onRestoreHistory={action("RESTORE_HISTORY")}
-              />,
+              // <RegionSelector
+              //   regions={activeImage ? activeImage.regions : emptyArr}
+              //   onSelectRegion={action("SELECT_REGION", "region")}
+              //   onDeleteRegion={action("DELETE_REGION", "region")}
+              //   onChangeRegion={action("CHANGE_REGION", "region")}
+              // />,
+              // state.keyframes && (
+              //   <KeyframesSelector
+              //     onChangeVideoTime={action("CHANGE_VIDEO_TIME", "newTime")}
+              //     onDeleteKeyframe={action("DELETE_KEYFRAME", "time")}
+              //     onChangeCurrentTime={action("CHANGE_VIDEO_TIME", "newTime")}
+              //     currentTime={state.currentVideoTime}
+              //     duration={state.videoDuration}
+              //     keyframes={state.keyframes}
+              //   />
+              // ),
+              // <HistorySidebarBox
+              //   history={state.history}
+              //   onRestoreHistory={action("RESTORE_HISTORY")}
+              // />,
             ].filter(Boolean)}
           >
             {canvas}

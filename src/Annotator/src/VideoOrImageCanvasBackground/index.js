@@ -141,18 +141,19 @@ export default ({
   ])
   const filter = activeImage.filter;
 
+  
+
   if (!videoSrc && !imageSrc)
     return <Error>No imageSrc or videoSrc provided</Error>
 
   if (error) return <Error>{error}</Error>
-
   return imageSrc && videoTime === undefined ? (
     <StyledImage
       {...mouseEvents}
       src={imageSrc}
       ref={imageRef}
       style={{
-        ...stylePosition, filter: `contrast(${filter['contrast']}) brightness(${filter["brightness"]}) invert(${filter['invert']})`
+        ...stylePosition, filter: filter ? `contrast(${filter['contrast'] || 1}) brightness(${filter["brightness"] || 1}) invert(${filter['inverse'] || 0})` :''
       }}
       onLoad={onImageLoaded}
       onError={onImageError}

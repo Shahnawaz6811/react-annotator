@@ -1,5 +1,5 @@
 import React from "react"
-import HeaderButton from "../HeaderButton"
+import HeaderButton from "../FooterButton"
 import Box from "@material-ui/core/Box"
 import Button from '@material-ui/core/Button';
 import { styled } from "@material-ui/core/styles";
@@ -33,19 +33,27 @@ type Props = {|
 
 
 
-export const Header = ({
+export const Footer = ({
   leftSideContent = null,
   items,
+  state,
   onClickItem,
 }: Props) => {
+  // console.log("State ",state);
+  let currentImageIndex = state.selectedImage;
+  // console.log("Items ",items);
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-      <div style={{display:'flex'}}>
+      <div style={{ display: 'flex', alignItems: 'center' }}>
+        
       <HeaderButton
           key={items[0].name}
           onClick={() => onClickItem(items[0])}
           {...items[0]}
       />
+      {
+        <p>{`${currentImageIndex+1}/${state.images.length} `}</p>
+      }
        <HeaderButton
           key={items[1].name}
           onClick={() => onClickItem(items[1])}
@@ -62,17 +70,20 @@ export const Header = ({
           {...item}
         />
       ))} */}
+        {/* undo */}
       <HeaderButton
           key={items[2].name}
           onClick={() => onClickItem(items[2])}
           {...items[2]}
-      />
+        />
+        {/* redo */}
       <HeaderButton
           key={items[3].name}
           onClick={() => onClickItem(items[3])}
           {...items[3]}
         />
-      <Button variant="outlined" color="primary" style={{borderColor:'green',color:'green',marginRight:'20px'}}>
+      <Button variant="outlined" color="primary" onClick={() => onClickItem({name:'Reset'})}
+ style={{borderColor:'green',color:'green',marginRight:'20px'}}>
         Reset
       </Button>
       <Button variant="outlined" color="primary" style={{borderColor:'green',color:'green',marginRight:'20px'}}>
@@ -100,4 +111,4 @@ export const Header = ({
   )
 }
 
-export default Header
+export default Footer

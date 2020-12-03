@@ -34,8 +34,8 @@ const FilterSlider = (props) => {
     const filter = props.activeImage.filter;
     return (
         <div>
-            {/* <input type="range" step="1" min="0" max="100" id={props.id} onChange={props.onChange} defaultValue={filter[props.id]}  /> */}
-            <PrettoSlider valueLabelDisplay="auto" id={props.id} name={props.id} aria-label={props.id} defaultValue={0} onChange={props.onChange} />
+            <input type="range" step="1" min="0" max="200" aria-label={props.id} id={props.id} onChange={props.onChange} defaultValue={0}  />
+            {/* <PrettoSlider valueLabelDisplay="auto" min="0" max="200" id={props.id} name={props.id} aria-label={props.id} defaultValue={0} onChange={props.onChange} /> */}
         </div>
     )
 }

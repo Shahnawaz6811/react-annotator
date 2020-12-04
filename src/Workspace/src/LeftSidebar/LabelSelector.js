@@ -92,7 +92,6 @@ const Row = ({
   region: r,
   highlighted,
   onSelectLabel,
-  onDeleteRegion,
   onChangeLabel,
   visible,
   selected,
@@ -121,11 +120,8 @@ const Row = ({
                 onChangeLabel({
                 ...r,
                 edit:true,
-                locked: r.shouldHideDeleteIcon
-                  ? r.createdByUser
-                    ? false
-                    : true
-                  : false,
+                  locked: false,
+                
               })
             }
             className="icon2"
@@ -140,17 +136,17 @@ const Row = ({
       visible={
         r.visible || r.visible === undefined ? (
           <VisibleIcon
-            // onClick={() =>
-            //   onChangeRegion({
-            //     ...r,
-            //     visible: false,
-            //   })
-            // }
+            onClick={() =>
+              onChangeLabel({
+                ...r,
+                visible: false,
+              })
+            }
             className="icon2"
           />
         ) : (
           <VisibleOffIcon
-            // onClick={() => onChangeRegion({ ...r, visible: true })}
+            onClick={() => onChangeLabel({ ...r, visible: true })}
             className="icon2"
           />
         )

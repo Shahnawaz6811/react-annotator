@@ -386,7 +386,7 @@ export const ImageCanvas = ({
           showHighlightBox={showHighlightBox}
         />
       )}
-      {imageLoaded && showTags && !dragging && (
+      {/* {imageLoaded && showTags && !dragging && (
         <PreventScrollToParents key="regionTags">
           <RegionTags
             regions={regions}
@@ -404,7 +404,7 @@ export const ImageCanvas = ({
             onRegionClassAdded={onRegionClassAdded}
           />
         </PreventScrollToParents>
-      )}
+      )} */}
       {!showTags && highlightedRegion && (
         <div key="topLeftTag" className={classes.fixedRegionLabel}>
           <RegionLabel

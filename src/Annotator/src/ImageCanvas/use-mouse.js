@@ -157,9 +157,9 @@ export default ({
     },
     onWheel: (e) => {
        
-      // console.log("MousePos",layoutParams);
+      console.log("MousePos",mousePosition);
       const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
-      zoomIn(direction, mousePosition.current)
+      zoomIn(direction, prevMousePosition.current)
       // e.preventDefault()
 
     },

@@ -158,6 +158,47 @@ const generalReducer = (state, action) => {
         action.region
       )
     }
+    case "CHANGE_LABEL": {
+      const label = action.label;
+      if (!label || activeImage.regions.length === 0) {
+        return state;
+      }
+      
+
+      // Check if image has regions associated to this label
+      const hasRegions = [...(activeImage.regions || [])].find((r) => r.cls === label.cls);
+      if (!hasRegions) {
+        return state;
+      }
+      
+
+      const regions = [...(activeImage.regions || [])].map((r) => {
+        if (r.cls === label.cls) {
+          return ({
+            ...r,
+            visible: label.visible,
+            locked: label.locked
+          })
+        }
+        return r;
+      })
+
+     state = setIn(state, ['regionClsList'], state.regionClsList.map(regionLabel => {
+        if (regionLabel.cls === label.cls) {
+          return ({
+            ...regionLabel,
+            visible: label.visible,
+            locked: label.locked
+
+          })
+        }
+       return regionLabel;
+      }));
+
+
+      return setIn(state, [...pathToActiveImage, "regions"], regions)
+
+    }
     case "CHANGE_IMAGE": {
       if (!activeImage) return state
       const { delta } = action
@@ -203,7 +244,7 @@ const generalReducer = (state, action) => {
     case "BEGIN_MOVE_POLYGON_POINT": {
 
       const { polygon, pointIndex } = action
-      console.log('Pindex: ', polygon);
+      // console.log('Pindex: ', polygon);
 
       state = closeEditors(state)
       if (
@@ -242,7 +283,7 @@ const generalReducer = (state, action) => {
     case "ADD_POLYGON_POINT": {
       const { polygon, point, pointIndex } = action
       const regionIndex = getRegionIndex(polygon)
-      console.log("regionIndex", regionIndex);
+      // console.log("regionIndex", regionIndex);
       if (regionIndex === null) return state
       const points = [...polygon.points]
       points.splice(pointIndex, 0, point)
@@ -377,7 +418,7 @@ const generalReducer = (state, action) => {
           })
         }
         case "DRAW_POLYGON": {
-          console.log('Draw pol')
+          // console.log('Draw pol')
           const { regionId } = state.mode
           const [region, regionIndex] = getRegion(regionId)
           if (!region) return setIn(state, ["mode"], null)
@@ -581,7 +622,7 @@ const generalReducer = (state, action) => {
               [x, y],
               [x, y],
             ],
-            open: false,
+            open: true,
             highlighted: true,
             color: defaultRegionColor,
             cls: defaultRegionCls,
@@ -681,7 +722,7 @@ const generalReducer = (state, action) => {
         case "MOVE_REGION":
         case "RESIZE_KEYPOINTS":
         case "MOVE_POLYGON_POINT": {
-          console.log("Moveee")
+          // console.log("Moveee")
           return { ...state, mode: null }
         }
         case "MOVE_KEYPOINT": {
@@ -691,7 +732,7 @@ const generalReducer = (state, action) => {
           return state
         }
         case "DRAW_EXPANDING_LINE": {
-          console.log("Drawinggg");
+          // console.log("Drawinggg");
           const [expandingLine, regionIndex] = getRegion(state.mode.regionId)
           if (!expandingLine) return state
           let newExpandingLine = expandingLine
@@ -792,7 +833,7 @@ const generalReducer = (state, action) => {
       const buttonName = action.buttonName.toLowerCase()
       switch (buttonName) {
         case "undo": {
-          console.log("Original State: ", state);
+          // console.log("Original State: ", state);
           // Check if current image has active regions to undo
           if (activeImage.regions && activeImage.regions.length > 0) {
             // const lastRegionAddedToActiveImage = activeImage.regions[];
@@ -820,18 +861,18 @@ const generalReducer = (state, action) => {
             }
             state =  setIn(state, ['historyCache', activeImage.name], historyCacheForActiveImage);
             // historyCache[activeImage.name] = 
-            console.log("Cachinggg", state);
+            // console.log("Cachinggg", state);
             // state = setIn(state, ['historyCache'], state.historyCache.length], lastRegionAddedToActiveImage);
-            console.log('HistoryCahce', historyCacheForActiveImage);
+            // console.log('HistoryCahce', historyCacheForActiveImage);
             
             //  state = setIn(state, ['historyCache',state.historyCache.length], currentStateToCache);
-            console.log("State after caching current state :", state);
+            // console.log("State after caching current state :", state);
 
           }
           return state;
         }
         case "redo": {
-          console.log('redo: ');
+          // console.log('redo: ');
           // Check if we have regions in cache  to redo
           if (state.historyCache && state.historyCache[activeImage.name] && state.historyCache[activeImage.name].length > 0) {
             
@@ -856,7 +897,7 @@ const generalReducer = (state, action) => {
           
         }
         case 'reset': {
-          console.log('Before reset: ', state);
+          // console.log('Before reset: ', state);
           if (activeImage.regions && activeImage.regions.length > 0) {
             let historyCacheForActiveImage = getIn(state, ['historyCache', activeImage.name]);
             if (historyCacheForActiveImage && historyCacheForActiveImage.length > 0) {
@@ -874,7 +915,7 @@ const generalReducer = (state, action) => {
           }
           
             // state = setIn(state.history[state.history.length - 1].state, ['history'], []);
-            console.log("After reset", state);
+            // console.log("After reset", state);
           
       
           return state;
@@ -956,7 +997,7 @@ const generalReducer = (state, action) => {
         
     }
     case "SELECT_TOOL": {
-      console.log("Action,", action);
+      // console.log("Action,", action);
       if(action.selectedTool === 'inverse') {
        let filter = getIn( state,
         [...pathToActiveImage, "filter"])

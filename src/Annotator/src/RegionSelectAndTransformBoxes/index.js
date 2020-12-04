@@ -8,7 +8,7 @@ const TransformGrabber = styled("div")({
   width: 8,
   height: 8,
   zIndex: 2,
-  border: "2px solid red",
+  border: "2px solid #FFF",
   position: "absolute",
 })
 
@@ -112,16 +112,15 @@ export const RegionSelectAndTransformBox = memo(
                   key={i}
                   {...mouseEvents}
                   onMouseDown={(e) => {
-                    console.log('Poly')
                     if (e.button === 0 && (!r.open || i === 0))
                       return onBeginMovePolygonPoint(r, i)
                     mouseEvents.onMouseDown(e)
                   }}
                   style={{
-                    cursor: "pointer",
+                    cursor: !r.open ? "move" : i === 0 ? "pointer" : undefined,
                     zIndex: 10,
                     pointerEvents:
-                     i === r.points.length - 1 ? "none" : undefined,
+                      r.open && i === r.points.length - 1 ? "none" : undefined,
                     left: proj.x - 4,
                     top: proj.y - 4,
                   }}
@@ -138,8 +137,7 @@ export const RegionSelectAndTransformBox = memo(
             r.points
               .map((p1, i) => [p1, r.points[(i + 1) % r.points.length]])
               .map(([p1, p2]) => [(p1[0] + p2[0]) / 2, (p1[1] + p2[1]) / 2])
-            .map((pa, i) => {
-              console.log("Polyy");
+              .map((pa, i) => {
                 const proj = mat
                   .clone()
                   .inverse()
@@ -149,21 +147,15 @@ export const RegionSelectAndTransformBox = memo(
                     key={i}
                     {...mouseEvents}
                     onMouseDown={(e) => {
-                      // console.log("i: ", i);
-                      if (e.button === 0) {
-                        console.log("Resizeee");
-                        return onAddPolygonPoint(r, pa, i + 1)
-                      } else {
-                        console.log("Nott");
-                      }
+                      if (e.button === 0) return onAddPolygonPoint(r, pa, i + 1)
                       mouseEvents.onMouseDown(e)
                     }}
                     style={{
-                      cursor: "pointer",
+                      cursor: "copy",
                       zIndex: 10,
                       left: proj.x - 4,
                       top: proj.y - 4,
-                      border: "4px dotted blue",
+                      border: "2px dotted #fff",
                       opacity: 0.5,
                     }}
                   />

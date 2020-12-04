@@ -190,6 +190,7 @@ const onClickIconSidebarItem = useEventCallback((item) => {
   // console.log('item ', mouseEvents, item);
   if (mouseEvents) {
     if (item.name === 'zoom-in') {
+      console.log("State: ", state);
       mouseEvents.onWheel({deltaY:-0.25})
     } else if(item.name === 'zoom-out'){
       mouseEvents.onWheel({deltaY:0.25})
@@ -217,9 +218,9 @@ const onDeleteObject = useEventCallback((r) => {
   // console.log('R: ', r);
   dispatch({ type: "SELECT_LABEL", selectedLabel: r })
 })
-const onChangeLabel = useEventCallback((r) => {
+const onChangeLabel = useEventCallback((l) => {
   // console.log('R: ', r);
-  dispatch({ type: "SELECT_LABEL", selectedLabel: r })
+  dispatch({ type: "CHANGE_LABEL", label: l })
 })
 
 
@@ -270,6 +271,7 @@ const onClickFooterItem = useEventCallback((item) => {
               state.showMask && "show-mask",
             ].filter(Boolean)}
         iconSidebarItems={[
+         
             {
                 name: "pan",
                 helperText: "Drag/Pan",

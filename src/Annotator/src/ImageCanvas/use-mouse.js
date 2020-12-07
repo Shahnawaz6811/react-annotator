@@ -155,11 +155,12 @@ export default ({
         onMouseUp({ x: projMouse.x / iw, y: projMouse.y / ih })
       }
     },
-    onWheel: (e) => {
-       
+    onWheel: (e, position) => {
+      console.log('layoutParams ',layoutParams)
+      console.log("Positon: ", position);
       console.log("MousePos",mousePosition);
       const direction = e.deltaY > 0 ? 1 : e.deltaY < 0 ? -1 : 0
-      zoomIn(direction, prevMousePosition.current)
+      zoomIn(direction, position || prevMousePosition.current)
       // e.preventDefault()
 
     },

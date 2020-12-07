@@ -141,7 +141,7 @@ export default ({
   ])
   const filter = activeImage.filter;
 
-  
+
 
   if (!videoSrc && !imageSrc)
     return <Error>No imageSrc or videoSrc provided</Error>
@@ -153,7 +153,7 @@ export default ({
       src={imageSrc}
       ref={imageRef}
       style={{
-        ...stylePosition, filter: filter ? `contrast(${filter['contrast'] || 1}) brightness(${filter["brightness"] || 1}) invert(${filter['inverse'] || 0})` :''
+        ...stylePosition, filter: filter ? `contrast(${filter['contrast'] || 1}) brightness(${filter["brightness"] || 100}%) invert(${filter['inverse'] || 0})` :''
       }}
       onLoad={onImageLoaded}
       onError={onImageError}

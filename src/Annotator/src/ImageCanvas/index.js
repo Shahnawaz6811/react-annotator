@@ -105,6 +105,7 @@ export const ImageCanvas = ({
   videoTime,
   realSize,
   showTags,
+  onRegionChange,
   onMouseMove = (p) => null,
   onMouseDown = (p) => null,
   onMouseUp = (p) => null,
@@ -206,6 +207,8 @@ export const ImageCanvas = ({
       setTimeout(() => changeImageDimensions(dims), 10)
     }
   )
+
+  
 
   const excludePattern = useExcludePattern()
 
@@ -469,6 +472,7 @@ export const ImageCanvas = ({
             keypointDefinitions={keypointDefinitions}
             imagePosition={imagePosition}
             regions={regions}
+            onRegionChange={onRegionChange}
             fullSegmentationMode={fullImageSegmentationMode}
           />
           <VideoOrImageCanvasBackground

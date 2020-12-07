@@ -97,6 +97,12 @@ export const MainLayout = ({
     detectKeys: [27],
   })
 
+
+  const onRegionChange = useEventCallback((regionData) => {
+    // console.log('R: ', r);
+    dispatch({ type: "CHANGE_REGION_DATA",regionData})
+  })
+
   const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
   const innerContainerRef = useRef()
   const hotkeyHandlers = useDispatchHotkeyHandlers({ dispatch })
@@ -119,6 +125,7 @@ export const MainLayout = ({
         settings.showCrosshairs &&
         !["select", "pan", "zoom"].includes(state.selectedTool)
       }
+      onRegionChange={onRegionChange}
       key={state.selectedImage}
       showMask={state.showMask}
       fullImageSegmentationMode={state.fullImageSegmentationMode}
@@ -190,10 +197,9 @@ const onClickIconSidebarItem = useEventCallback((item) => {
   // console.log('item ', mouseEvents, item);
   if (mouseEvents) {
     if (item.name === 'zoom-in') {
-      console.log("State: ", state);
-      mouseEvents.onWheel({deltaY:-0.25})
+      mouseEvents.onWheel({deltaY:-0.25},{x:165, y: 237})
     } else if(item.name === 'zoom-out'){
-      mouseEvents.onWheel({deltaY:0.25})
+      mouseEvents.onWheel({deltaY:0.25},{x:165, y: 237})
     }
   }
   
@@ -216,14 +222,23 @@ const onSelectObject = useEventCallback((r) => {
 })
 const onDeleteObject = useEventCallback((r) => {
   // console.log('R: ', r);
-  dispatch({ type: "SELECT_LABEL", selectedLabel: r })
+  dispatch({ type: "DELETE_REGION", region: r })
 })
 const onChangeLabel = useEventCallback((l) => {
   // console.log('R: ', r);
   dispatch({ type: "CHANGE_LABEL", label: l })
 })
 
+const onClickLabel = useEventCallback(() => {
+  // console.log('R: ', r);
+  dispatch({ type: "CLICK_LABEL"})
+})
 
+
+const onSubmit = useEventCallback(() => {
+  // console.log('R: ', r);
+  dispatch({ type: "SUBMIT"})
+})
 
 
 
@@ -245,7 +260,8 @@ const onClickFooterItem = useEventCallback((item) => {
         onDeleteObject={onDeleteObject}
                 onChangeLabel={onChangeLabel}
                 onChangeObject={onChangeObject}
-                onSelectObject={onSelectObject}
+        onSelectObject={onSelectObject}
+        onClickLabel={onClickLabel}
             state={state}
             footerItems={[
               { name: "Prev" },
@@ -262,7 +278,8 @@ const onClickFooterItem = useEventCallback((item) => {
               // state.fullScreen ? { name: "Window" } : { name: "Fullscreen" },
               // { name: "Save" },
             ].filter(Boolean)}
-            onClickFooterItem={onClickFooterItem}
+        onClickFooterItem={onClickFooterItem}
+        onSubmit={onSubmit}
         onClickIconSidebarItem={onClickIconSidebarItem}
         onFilterValueUpdate={(filter)=>dispatch({type:'UPDATE_FILTER',payload:filter})}
             selectedTools={[

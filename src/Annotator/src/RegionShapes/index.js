@@ -1,6 +1,6 @@
 // @flow
 
-import React, { memo } from "react"
+import React, { memo,useEffect } from "react"
 import colorAlpha from "color-alpha"
 
 function clamp(num, min, max) {
@@ -191,12 +191,30 @@ export const RegionShapes = ({
   regions = [],
   keypointDefinitions,
   fullSegmentationMode,
+  onRegionChange,
 }) => {
+  const svgRef = React.useRef(null);
+  const svg = svgRef.current;
+  useEffect(() => {
+    // const svg = document.getElementById("svg")
+    if (svg) {
+      var s = new XMLSerializer().serializeToString(svg); 
+      var encodedData = window.btoa(s);
+      // console.log("encodedData", encodedData)
+      onRegionChange(`data:image/svg+xml;base64,${encodedData}`);      
+    }
+
+  },[regions]);
+
   const iw = imagePosition.bottomRight.x - imagePosition.topLeft.x
   const ih = imagePosition.bottomRight.y - imagePosition.topLeft.y
   if (isNaN(iw) || isNaN(ih)) return null
+  
+ 
+
   return (
     <svg
+      ref={svgRef}
       width={iw}
       height={ih}
       style={{

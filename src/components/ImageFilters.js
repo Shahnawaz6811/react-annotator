@@ -1,88 +1,71 @@
-import React,{useState} from 'react';
-// import './filters.css';
-const data = {
-  brightness: '1%',
-  contrast: '100%',
-  invert:'0%'
-}
-  
+import React, { Component } from "react";
+import { Surface } from "gl-react-dom";
+// import { ContrastSaturationBrightness } from "gl-react-contrast-saturation-brightness";
+import ContrastSaturationBrightness from "./ContrastBrightness";
+import "../App.css";
 
-const Filters = ({onChange,filters}) => {
-
-  const updateFilterValue = (name,onChange) => {
-    switch (name) {
-      case 'contrast':
-        return (<input type="range" step="1" min="0" max="200" id={name}
-        onChange={onChange} defaultValue={filters[name]} />)
-      
-        case 'brightness': return (<input type="range" step="1" min="0" max="200" id={name} onChange={onChange} defaultValue={filters[name]}  />)
-      
-        case 'invert': return (<input type="range" step="1" min="0" max="100" id={name} onChange={onChange} defaultValue={filters[name]}  />)
-    
-        default: return (<input type="range"/>)
-        
-       } 
-   }
-
-     return(
-       <div className="contentWrap">
-       <div className="sidebar">
-         <div className="title">Filters</div>
-         {Object.keys(filters).map((name => {     
-              
-           return(  
-            <div className="setting">
-               <label className="filterName">
-                 <div>{name}</div>
-                 <div>{filters[name]}</div>
-                 </ label>
-               {updateFilterValue(name,onChange)}
-            </div>
-           )
-         }))}
-         </div>
-       <Image url='https://www.w3schools.com/w3images/sound.jpg' filters={filters} />
-       </div>
-       )
-   }
-  
-
-const Image = (props) => {
-       var imgStyle = {
-        filter: `contrast(${props.filters['contrast']}) brightness(${props.filters["brightness"]}) invert(${props.filters['invert']})`
-   ,
-        backgroundImage:`url(${props.url})`
-       }
-      return(
-        <div className="imageContainer"><img className="guitar" style={imgStyle}  /> </div>
-      )
-    }
-  
-  const ImageEditor  = (props) => {
-     const [filterState, setFilterState] = useState(data);
-    
-    const handleChange = (e) => {
-        var value = e.target.value;
-      setFilterState(state => {
-        return ({...state,[e.target.id]: value + '%'})
-      })
-      }
-      return(
-          <div className="settings">         
-            <Filters filters={filterState}  onChange={handleChange}/>
-            
-            </div>
-        )
-    }
-    
-    
-
-
-  ImageEditor.defaultProps = {
-    data : data
+class Field extends Component {
+  render() {
+    const { label, onChange, value } = this.props;
+    return (
+      <label>
+        <span>{label}</span>
+        <input
+          type="range"
+          min={1}
+          max={40}
+          step={1}
+          value={value}
+          onChange={e => onChange(e.target.value)}
+        />
+        <span>{value}%</span>
+      </label>
+    );
   }
-  
-  
-  
-export default ImageEditor;
-//   ReactDOM.render(<ImageEditor/>,document.getElementById("root"));
+}
+
+class App extends Component {
+  state = {
+    contrast: 1,
+    brightness: 1
+  };
+  render() {
+    const { contrast, brightness } = this.state;
+    return (
+      <div className="App">
+        <header className="App-header">
+          <h1 className="App-title">gl-react-contrast-saturation-brightness</h1>
+        </header>
+        <div className="App-body">
+          <Surface width={500} height={300}>
+            <ContrastSaturationBrightness
+              contrast={contrast}
+              brightness={brightness}
+            >
+              https://i.imgur.com/wxqlQkh.jpg
+            </ContrastSaturationBrightness>
+          </Surface>
+          <div>
+            <Field
+              value={contrast}
+              onChange={contrast => this.setState({ contrast })}
+              label="contrast"
+            />
+            {/* <Field
+              value={saturation}
+              onChange={saturation => this.setState({ saturation })}
+              label="saturation"
+            /> */}
+            <Field
+              value={brightness}
+              onChange={brightness => this.setState({ brightness })}
+              label="brightness"
+            />
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default App;

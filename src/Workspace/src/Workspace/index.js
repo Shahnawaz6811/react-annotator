@@ -21,7 +21,7 @@ const RightWorkContainer = styled("div")({
 
 const Container = styled("div")({
   display: "flex",
-  width: "80%",
+  width: "90%",
   flexDirection: "column",
   padding: '0 30px',
   height: "100vh",
@@ -47,6 +47,8 @@ export default ({
   onClickIconSidebarItem,
   activeImage,
   state,
+  onSubmit,
+  onClickLabel,
   onSelectLabel,
   onChangeLabel,
   onSelectObject,
@@ -64,7 +66,7 @@ export default ({
       <Container style={style}>
       
         <SidebarsAndContent>
-         {/* {rightSidebarItems} */}
+         {rightSidebarItems}
           {rightSidebarItems.length === 0 ? null : (
               <LeftSidebar state={state}
                 onSelectLabel={onSelectLabel}
@@ -88,8 +90,10 @@ export default ({
             <Footer
             state={state}
           leftSideContent={headerLeftSide}
-          onClickItem={onClickFooterItem}
-          items={footerItems}
+                onClickItem={onClickFooterItem}
+                onSubmit={onSubmit}
+                items={footerItems}
+                onClickLabel={onClickLabel}
         />
           </RightWorkContainer>
 

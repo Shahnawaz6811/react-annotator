@@ -38,6 +38,7 @@ const RowLayout = ({
   classification,
   area,
   tags,
+  trash,
   lock,
   visible,
   onClick,
@@ -56,12 +57,16 @@ const RowLayout = ({
         <Grid item xs={5}>
           {classification}
         </Grid>
-        <Grid item xs={5}>
+        <Grid item xs={4}>
           <div style={{ textAlign: "right", paddingRight: 6 }}>{area}</div>
+        </Grid>
+        <Grid item xs={1}>
+          {trash}
         </Grid>
         <Grid item sm={1}>
           {visible}
         </Grid>
+        
         <Grid item xs={1}>
           {lock}
         </Grid>
@@ -113,6 +118,11 @@ const Row = ({
 
       classification={<Chip text={r.cls || ""} color={r.color || "#ddd"} />}
       area=""
+      trash={
+        (
+          <TrashIcon onClick={() => onDeleteObject(r)} className="icon2" />
+        )
+      }
       
       lock={
         r.locked ? (

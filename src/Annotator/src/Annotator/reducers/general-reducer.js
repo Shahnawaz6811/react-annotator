@@ -158,6 +158,20 @@ const generalReducer = (state, action) => {
         action.region
       )
     }
+
+    case 'SUBMIT': {
+
+      const regionData = getIn(state, [...pathToActiveImage, "region_data"])
+      console.log("Data: ", regionData);
+
+      return state;
+    }
+    
+
+    case 'CHANGE_REGION_DATA': {
+      const { regionData } = action;
+       return setIn(state, [...pathToActiveImage, "region_data"], regionData)
+      }
     case "CHANGE_LABEL": {
       const label = action.label;
       if (!label || activeImage.regions.length === 0) {
@@ -813,14 +827,38 @@ const generalReducer = (state, action) => {
         editingLabels: false,
       })
     }
+      
+    case 'CLICK_LABEL': {
+      const label = state.images[currentImageIndex].label;
+      console.log("Label", label);
+      return setIn(
+        state,
+        ["images", currentImageIndex, "label"],
+        !label
+      )
+    }
     case "DELETE_REGION": {
       const regionIndex = getRegionIndex(action.region)
       if (regionIndex === null) return state
-      return setIn(
+      const region = action.region;
+
+
+      state =  setIn(
         state,
         [...pathToActiveImage, "regions"],
         (activeImage.regions || []).filter((r) => r.id !== action.region.id)
       )
+
+      let historyCacheForActiveImage = getIn(state, ['historyCache', activeImage.name]);
+      if (historyCacheForActiveImage) {
+        historyCacheForActiveImage = Immutable.asMutable(historyCacheForActiveImage);
+        historyCacheForActiveImage.push(region)
+      } else {
+        historyCacheForActiveImage = [];
+        historyCacheForActiveImage.push(region)
+      }
+      return setIn(state, ['historyCache', activeImage.name], historyCacheForActiveImage);
+
     }
     case "DELETE_SELECTED_REGION": {
       return setIn(
@@ -883,7 +921,8 @@ const generalReducer = (state, action) => {
 
             // remove last item from history cache.
             state = 
-            setIn(state,['historyCache',activeImage.name], state.historyCache[activeImage.name].filter((element, index) => index < state.historyCache[activeImage.name].length - 1))
+              setIn(state, ['historyCache', activeImage.name], state.historyCache[activeImage.name].filter((element, index) => index < state.historyCache[activeImage.name].length - 1))
+
 
             // console.log("lastRegionAddedToCache", lastRegionAddedToCache)
             // redo active image regions with last item popped from history cache

@@ -59,15 +59,19 @@ const Icon = (name) => {
 }
 
 
-export const HeaderButton = ({ name, icon, disabled, onClick }) => {
+export const HeaderButton = ({ name, icon, disabled, onClick,showLabel }) => {
   const customIconMapping = useIconDictionary()
   return (
     <StyledButton onClick={onClick} disabled={disabled}>
       <ButtonInnerContent>
-      <FontAwesomeIcon style={faStyle} size="sm" fixedWidth icon={Icon(name)} />
-        <Text>
+      <FontAwesomeIcon style={!disabled ? faStyle : {...faStyle,color:'gray'}} size="sm" fixedWidth icon={Icon(name)} />
+        {
+          showLabel && (
+            <Text>
           <div>{name}</div>
         </Text>
+          )
+        }
       </ButtonInnerContent>
     </StyledButton>
   )

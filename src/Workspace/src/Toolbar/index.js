@@ -5,6 +5,7 @@ import { iconMapping } from "../icon-mapping.js"
 import { useIconDictionary } from "../icon-dictionary"
 import Tooltip from "@material-ui/core/Tooltip"
 import Slider from './Slider';
+import { mapping } from './icon_mapping'
 const Container = styled("div")({
   display: "flex",
   width:'100%',
@@ -26,13 +27,15 @@ const RenderButton = (props) => {
   const NameIcon = props.NameIcon;
   return (
     <div>
-    <IconButton
+      <img
+        src={mapping[props.item.name]}
       key={props.item.name}
-      color={
-        props.item.selected || props.selectedTools.includes(props.item.name.toLowerCase())
-          ? "primary"
-          : "default"
-      }
+      style={{cursor:'pointer'}}
+      // color={
+      //   props.item.selected || props.selectedTools.includes(props.item.name.toLowerCase())
+      //     ? "primary"
+      //     : "default"
+      // }
       disabled={Boolean(props.item.disabled)}
         onClick={() => {
 
@@ -42,9 +45,10 @@ const RenderButton = (props) => {
           }
          return props.item.onClick ? props.item.onClick : props.onClickItem(props.item)}
       } 
-    >
-        {props.item.icon || <NameIcon />}<br /> 
-        </IconButton>
+    />
+      {/* {props.item.icon || <NameIcon />}<br />  */}
+      
+        
      {showSlider && <Slider id={props.item.name} activeImage={props.activeImage} onChange={props.handleSlide}/> }   
     </div>
       

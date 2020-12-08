@@ -1,6 +1,6 @@
 // @flow
 
-import  { useReducer, useEffect } from "react"
+import  React,{ useReducer, useEffect } from "react"
 import type { Node } from "react"
 import MainLayout from "../MainLayout"
 import type {
@@ -38,6 +38,7 @@ type Props = {
   pointDistancePrecision?: number,
   RegionEditLabel?: Node,
   onSubmit: (MainLayoutState) => any,
+  onSave: (Object) => any,
   videoTime?: number,
   videoSrc?: string,
   keyframes?: Object,
@@ -78,6 +79,7 @@ export const Annotator = ({
   videoTime = 0,
   videoName,
   onSubmit,
+  onSave,
   onNextImage,
   onPrevImage,
   keypointDefinitions,
@@ -139,8 +141,9 @@ export const Annotator = ({
       if (action.buttonName === "submit") {
         return onSubmit(without(state, "history"))
       }
-      // else if (action.buttonName === "save" && onNextImage) {
-      // }
+      else if (action.buttonName === "save") {
+        return onSave(state.images[state.selectedImage])
+      }
         //   return onNextImage(without(state, "history"))
         // }
       // else if (action.buttonName === "Next" && onNextImage) {

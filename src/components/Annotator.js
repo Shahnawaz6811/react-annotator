@@ -4,7 +4,7 @@ import {images,labels} from './images'
 const AppAnnotator = () => {
     return (
         <div>
-            <Annotator images={ images} regionClsList={labels}/>
+            <Annotator images={images} regionClsList={labels} onSubmit={ () => console.log('Submit: ')}/>
         </div>
     )
 }

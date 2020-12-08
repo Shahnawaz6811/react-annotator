@@ -867,26 +867,23 @@ const generalReducer = (state, action) => {
         (activeImage.regions || []).filter((r) => !r.highlighted)
       )
     }
-    case "HEADER_BUTTON_CLICKED": {
+    case "FOOTER_BUTTON_CLICKED": {
       const buttonName = action.buttonName.toLowerCase()
       switch (buttonName) {
         case "undo": {
+          
           // console.log("Original State: ", state);
           // Check if current image has active regions to undo
           if (activeImage.regions && activeImage.regions.length > 0) {
-            // const lastRegionAddedToActiveImage = activeImage.regions[];
 
             // get last region inserted to active image
            let lastRegionAddedToActiveImage = getIn(state,
             [...pathToActiveImage, "regions",activeImage.regions.length - 1])
-            // console.log('lastRegionAddedToActiveImage: ', lastRegionAddedToActiveImage);
-            // const currentRegions = Immutable.asMutable(activeImage.regions.splice(-1,1))
+         
 
             //Remove last region inserted to active image
             state = 
-            setIn(state,[...pathToActiveImage, "regions"], activeImage.regions.filter((element, index) => index < activeImage.regions.length - 1))
-
-            // console.log("After removing regions:", state);  
+            setIn(state,[...pathToActiveImage, "regions"], activeImage.regions.filter((element, index) => index < activeImage.regions.length - 1)) 
             
              // Cache last active image region to historyCache
             let historyCacheForActiveImage = getIn(state, ['historyCache', activeImage.name]);
@@ -898,19 +895,12 @@ const generalReducer = (state, action) => {
               historyCacheForActiveImage.push(lastRegionAddedToActiveImage)
             }
             state =  setIn(state, ['historyCache', activeImage.name], historyCacheForActiveImage);
-            // historyCache[activeImage.name] = 
-            // console.log("Cachinggg", state);
-            // state = setIn(state, ['historyCache'], state.historyCache.length], lastRegionAddedToActiveImage);
-            // console.log('HistoryCahce', historyCacheForActiveImage);
-            
-            //  state = setIn(state, ['historyCache',state.historyCache.length], currentStateToCache);
-            // console.log("State after caching current state :", state);
-
+        
           }
           return state;
         }
         case "redo": {
-          // console.log('redo: ');
+
           // Check if we have regions in cache  to redo
           if (state.historyCache && state.historyCache[activeImage.name] && state.historyCache[activeImage.name].length > 0) {
             
@@ -974,6 +964,19 @@ const generalReducer = (state, action) => {
             state.images[currentImageIndex + 1],
             currentImageIndex + 1
           )
+        }
+
+        case "save": {
+          return state
+        }
+
+        case 'nolabel': {
+          const label = state.images[currentImageIndex].label;
+      return setIn(
+        state,
+        ["images", currentImageIndex, "label"],
+        !label
+      )
         }
         
         case "clone": {

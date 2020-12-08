@@ -242,10 +242,11 @@ export const RightSidebar = ({ state,
 
   return (
 
-            <div style={{height:'300px',borderTop:'1px solid gray'}}>
+            <div style={{height:'48%',borderTop:'1px solid gray',overflowY:'scroll'}}>
           <h4 style={{ color: 'red', margin: '10px' }}>Objects</h4>
           {state.images[state.selectedImage].regions.map((r, i) => {
-            {/* console.log("Region:", r); */}
+            {/* console.log("Region:", r); */ }
+            
             return(
               <Row
                 key={r.id}

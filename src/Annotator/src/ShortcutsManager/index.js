@@ -114,19 +114,19 @@ export const useDispatchHotkeyHandlers = ({ dispatch }) => {
       },
       save_and_previous_sample: () => {
         dispatch({
-          type: "HEADER_BUTTON_CLICKED",
+          type: "FOOTER_BUTTON_CLICKED",
           buttonName: "Prev",
         })
       },
       save_and_next_sample: () => {
         dispatch({
-          type: "HEADER_BUTTON_CLICKED",
+          type: "FOOTER_BUTTON_CLICKED",
           buttonName: "Next",
         })
       },
       save_and_exit_sample: () => {
         dispatch({
-          type: "HEADER_BUTTON_CLICKED",
+          type: "FOOTER_BUTTON_CLICKED",
           buttonName: "Save",
         })
       },

@@ -1,10 +1,8 @@
 import React from "react" 
-import HeaderButton from "../FooterButton"
-import Box from "@material-ui/core/Box"
+import FooterButton from "../FooterButton"
 import Button from '@material-ui/core/Button';
 import { styled } from "@material-ui/core/styles";
 import Checkbox from '@material-ui/core/Checkbox';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 
@@ -34,12 +32,9 @@ type Props = {|
 
 
 export const Footer = ({
-  leftSideContent = null,
   items,
   state,
-  onClickItem,
-  onClickLabel,
-  onSubmit,
+  dispatch,
 }: Props) => {
 
   let currentImageIndex = state.selectedImage;
@@ -49,64 +44,64 @@ export const Footer = ({
   
   return (
     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
-      <div style={{ display: 'flex', alignItems: 'center' }}>
-        
-      <HeaderButton
-          key={items[0].name}
-          showLabel={false}
-          onClick={() => onClickItem(items[0])}
-          {...items[0]}
-      />
-      {
-        <p>{`${currentImageIndex+1}/${state.images.length} `}</p>
-      }
-       <HeaderButton
-          key={items[1].name}
-          showLabel={false}
-          onClick={() => onClickItem(items[1])}
-          {...items[1]}
-      />
-      </div>
+     
       
     <Container>
      
-      <HeaderButton
-          key={items[2].name}
-          onClick={() => onClickItem(items[2])}
-          {...items[2]}
+      <FooterButton
+          onClick={() => dispatch({
+                type: "FOOTER_BUTTON_CLICKED",
+                buttonName: "Undo",
+          })}
+          name="Undo"
           showLabel={true}
           disabled={!activeRegions}
         />
-        {/* redo */}
-      <HeaderButton
-          key={items[3].name}
-          onClick={() => onClickItem(items[3])}
-          {...items[3]}
+
+      <FooterButton
+          onClick={() => dispatch({
+                type: "FOOTER_BUTTON_CLICKED",
+                buttonName: "redo",
+          })}
           showLabel={true}
+          name="Redo"
           disabled={historyCache ? Array.isArray(historyCache) && historyCache.length === 0 : true}
         />
-      <Button variant="outlined" color="primary" disabled={!activeRegions}   onClick={() => onClickItem({name:'Reset'})}
- style={
-         activeRegions ? { borderColor: 'green', color: 'green',marginRight:'20px' }: { borderColor: 'gray', color: 'gray',marginRight:'20px' }}>
-        Reset
+
+        <Button
+          variant="contained"
+          color="primary"
+          disabled={!activeRegions}
+          onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "reset" })}
+          >
+          Reset
       </Button>
-      <Button variant="outlined"  color="primary"  disabled={!activeRegions} style={
-         activeRegions ? { borderColor: 'green', color: 'green',marginRight:'20px' }: { borderColor: 'gray', color: 'gray',marginRight:'20px' }}>
+        
+        <Button variant="contained"
+          color="primary"
+          disabled={!activeRegions}
+          onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "save" })}
+          >
         Save
       </Button>
       <FormControlLabel
         control={
           <Checkbox
             checked={activeImage.label}
-            onChange={onClickLabel}
+            onChange={() => dispatch({
+                type: "FOOTER_BUTTON_CLICKED",
+                buttonName: "nolabel",
+              })}
             name="checkedB"
             color="primary"
           />
         }
         label="Nothing to label"
       />
-        <Button variant="outlined" onClick={onSubmit} disabled={!activeRegions} color="primary" style={
-         activeRegions ? { borderColor: 'green', color: 'green' }: { borderColor: 'gray', color: 'gray' }}>
+        <Button variant="contained"
+          onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "submit" })}
+          disabled={!activeRegions} color="primary"
+          >
         Submit
       </Button>
 

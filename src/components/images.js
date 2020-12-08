@@ -54,9 +54,18 @@ export const labels = [
         cls:'Adrenal Vein',
         color:'lime'
     },
-    // {
-    //     label:'Kidney',
-    //     color:'gray'
-    // },
+    {
+        cls:'Kidney',
+        color:'gray'
+    },
+    {
+        cls:'Lumbar Vein',
+        color:'purple'
+    },
+    {
+        cls:'Gonadal Vein',
+        color:'yellow'
+    },
+    
     
 ]

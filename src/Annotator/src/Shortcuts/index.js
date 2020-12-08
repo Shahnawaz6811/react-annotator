@@ -51,7 +51,7 @@ const defaultShortcuts = {
   },
   "prev-image": {
     action: {
-      type: "HEADER_BUTTON_CLICKED",
+      type: "FOOTER_BUTTON_CLICKED",
       buttonName: "Prev",
     },
     name: "Previous Image",
@@ -59,7 +59,7 @@ const defaultShortcuts = {
   },
   "next-image": {
     action: {
-      type: "HEADER_BUTTON_CLICKED",
+      type: "FOOTER_BUTTON_CLICKED",
       buttonName: "Next",
     },
     name: "Next Image",

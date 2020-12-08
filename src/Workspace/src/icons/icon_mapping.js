@@ -16,5 +16,4 @@ export const mapping = {
     draw:draw,
     brightness:brightness,
     contrast:contrast,
-    
 }

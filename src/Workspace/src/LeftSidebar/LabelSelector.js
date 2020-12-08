@@ -223,7 +223,7 @@ export const RightSidebar = ({ state,
 
   return (
 
-          <div style={{height:'300px'}}>
+          <div style={{height:'48%',overflowY:'scroll'}}>
               <h4 style={{color:'red',margin:'10px'}}>Labels</h4>
           {state.regionClsList.map((r, i) => {
               const label = state.images[state.selectedImage].label

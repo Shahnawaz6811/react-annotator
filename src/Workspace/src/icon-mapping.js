@@ -13,6 +13,17 @@ import HotkeysIcon from "@material-ui/icons/Keyboard"
 
 
 
+import pan from './icons/Pan.svg';
+import zoomIn from './icons/Zoom_In.svg';
+import zoomOut from './icons/Zoom_Out.svg';
+import invert from './icons/Invert.svg';
+import polygon from './icons/Polygon.svg';
+import draw from './icons/Draw.svg';
+import brightness from './icons/Brightness.svg';
+import contrast from './icons/Contrast.svg';
+
+
+
 export const iconMapping = {
   back: BackIcon,
   prev: BackIcon,
@@ -34,6 +45,14 @@ export const iconMapping = {
   clone: QueuePlayNextIcon,
   hotkeys: HotkeysIcon,
   shortcuts: HotkeysIcon,
+  pan: pan,
+    'zoom-in': zoomIn,
+    'zoom-out':zoomOut,
+    inverse:invert,
+    polygon:polygon,
+    draw:draw,
+    brightness:brightness,
+    contrast:contrast,
 }
 
 export default iconMapping

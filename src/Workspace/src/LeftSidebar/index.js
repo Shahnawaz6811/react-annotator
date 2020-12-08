@@ -170,7 +170,7 @@ const Container = styled("div")({
   width: 300,
   display: "flex",
   flexDirection: "column",
-  height: '80%',
+  height: '95%',
   padding:'0 20px',
   marginRight:'20px',
   boxShadow: '0 2px 2px 0 rgba(0,0,0,0.2)',
@@ -184,6 +184,7 @@ const Container = styled("div")({
 
 const InnerSliderContent = styled("div")({
   width: 300,
+  height:'100%',
 })
 
 const getInitialExpandedState = () => {

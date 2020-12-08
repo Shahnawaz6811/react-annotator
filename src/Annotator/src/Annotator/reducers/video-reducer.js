@@ -29,7 +29,7 @@ export default (state: MainLayoutVideoAnnotationState, action: Action) => {
         return setIn(state, ["videoDuration"], duration * 1000)
       }
     }
-    case "HEADER_BUTTON_CLICKED": {
+    case "FOOTER_BUTTON_CLICKED": {
       switch (action.buttonName.toLowerCase()) {
         case "play":
           return setIn(state, ["videoPlaying"], true)

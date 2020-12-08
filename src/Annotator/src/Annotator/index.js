@@ -37,7 +37,7 @@ type Props = {
   showPointDistances?: boolean,
   pointDistancePrecision?: number,
   RegionEditLabel?: Node,
-  onExit: (MainLayoutState) => any,
+  onSubmit: (MainLayoutState) => any,
   videoTime?: number,
   videoSrc?: string,
   keyframes?: Object,
@@ -77,7 +77,7 @@ export const Annotator = ({
   videoSrc,
   videoTime = 0,
   videoName,
-  onExit,
+  onSubmit,
   onNextImage,
   onPrevImage,
   keypointDefinitions,
@@ -134,14 +134,20 @@ export const Annotator = ({
   )
 
   const dispatch = useEventCallback((action: Action) => {
-    if (action.type === "HEADER_BUTTON_CLICKED") {
-      if (["Exit", "Done", "Save", "Complete"].includes(action.buttonName)) {
-        return onExit(without(state, "history"))
-      } else if (action.buttonName === "Next" && onNextImage) {
-        return onNextImage(without(state, "history"))
-      } else if (action.buttonName === "Prev" && onPrevImage) {
-        return onPrevImage(without(state, "history"))
+    if (action.type === "FOOTER_BUTTON_CLICKED") {
+      // console.log('Footer');
+      if (action.buttonName === "submit") {
+        return onSubmit(without(state, "history"))
       }
+      // else if (action.buttonName === "save" && onNextImage) {
+      // }
+        //   return onNextImage(without(state, "history"))
+        // }
+      // else if (action.buttonName === "Next" && onNextImage) {
+      //   return onNextImage(without(state, "history"))
+      // } else if (action.buttonName === "Prev" && onPrevImage) {
+      //   return onPrevImage(without(state, "history"))
+      // }
     }
     dispatchToReducer(action)
   })

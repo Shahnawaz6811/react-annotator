@@ -142,7 +142,17 @@ export const Annotator = ({
         return onSubmit(without(state, "history"))
       }
       else if (action.buttonName === "save") {
-        return onSave(state.images[state.selectedImage])
+        const encodedData = state.images[state.selectedImage].region_data;
+        var canvas = document.createElement("canvas");
+          canvas.width = 800
+          canvas.height = 500
+          var ctx = canvas.getContext( "2d" );
+          var img = document.createElement("img");
+          img.setAttribute("src", "data:image/svg+xml;base64," + encodedData);
+          img.onload = function() {
+            ctx.drawImage(img, 0, 0);
+            return onSave(state.images[state.selectedImage],canvas.toDataURL("image/png"))
+        };
       }
         //   return onNextImage(without(state, "history"))
         // }

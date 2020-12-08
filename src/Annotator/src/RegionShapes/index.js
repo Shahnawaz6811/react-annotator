@@ -200,10 +200,11 @@ export const RegionShapes = ({
     if (svg) {
       var s = new XMLSerializer().serializeToString(svg); 
       var encodedData = window.btoa(s);
-      // console.log("encodedData", encodedData)
-      onRegionChange(`data:image/svg+xml;base64,${encodedData}`);      
-    }
+      onRegionChange(encodedData);      
 
+      // console.log("encodedData", encodedData)
+      // onRegionChange(`data:image/svg+xml;base64,${encodedData}`);      
+    }
   },[regions]);
 
   const iw = imagePosition.bottomRight.x - imagePosition.topLeft.x

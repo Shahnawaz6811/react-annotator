@@ -8,7 +8,7 @@ const AppAnnotator = () => {
         <div>
             <Annotator images={images}
                 regionClsList={labels}
-                onSave={(selectedImage) => console.log('selectedImage: ',selectedImage)}
+                onSave={(selectedImage,imageData) => console.log('Savingg: ',selectedImage,imageData)}
                 onSubmit={(state) => console.log('Submit: ',state)} />
         </div>
     )

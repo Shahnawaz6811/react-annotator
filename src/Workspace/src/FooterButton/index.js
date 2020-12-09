@@ -62,7 +62,7 @@ const Icon = (name) => {
 export const HeaderButton = ({ name, icon, disabled, onClick,showLabel }) => {
   const customIconMapping = useIconDictionary()
   return (
-    <StyledButton onClick={onClick} disabled={disabled}>
+    <StyledButton onClick={onClick} disabled={disabled} className="imgNavigation">
       <ButtonInnerContent>
       <FontAwesomeIcon style={!disabled ? faStyle : {...faStyle,color:'gray'}} size="sm" fixedWidth icon={Icon(name)} />
         {

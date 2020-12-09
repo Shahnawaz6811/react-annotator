@@ -169,8 +169,7 @@ const generalReducer = (state, action) => {
     
 
     case 'CHANGE_REGION_DATA': {
-      const { regionData, imageDimen } = action.payload;
-     state = setIn(state, [...pathToActiveImage, "dimen"], imageDimen)
+      const { regionData } = action;
        return setIn(state, [...pathToActiveImage, "region_data"], regionData)
       }
     case "CHANGE_LABEL": {
@@ -972,11 +971,11 @@ const generalReducer = (state, action) => {
         }
 
         case 'nolabel': {
-          const shouldLabel = state.images[currentImageIndex].shouldLabel;
+          const label = state.images[currentImageIndex].label;
       return setIn(
         state,
-        ["images", currentImageIndex, "shouldLabel"],
-        !shouldLabel
+        ["images", currentImageIndex, "label"],
+        !label
       )
         }
         
@@ -1040,7 +1039,7 @@ const generalReducer = (state, action) => {
         
     }
     case "SELECT_TOOL": {
-      state = setIn(state, ["selectedTool"], action.selectedTool)
+      // console.log("Action,", action);
       if(action.selectedTool === 'inverse') {
        let filter = getIn( state,
         [...pathToActiveImage, "filter"])
@@ -1048,7 +1047,7 @@ const generalReducer = (state, action) => {
          filter = {};
          filter.inverse = 0;
        }
-      state =  setIn(
+      return  setIn(
         state,
         [...pathToActiveImage, "filter"],
         {...filter,inverse: filter.inverse == 0 ? 100:0}
@@ -1056,12 +1055,13 @@ const generalReducer = (state, action) => {
       }
     
        if (action.selectedTool === "zoom-in") {
-        state =  setIn(state, ["zoomOut"], !state.zoomOut)
+        return setIn(state, ["zoomOut"], !state.zoomOut)
       }
       if (action.selectedTool === "modify-allowed-area" && !state.allowedArea) {
         state = setIn(state, ["allowedArea"], { x: 0, y: 0, w: 1, h: 1 })
       }
-      return setIn(state, ["mode"], null)
+      state = setIn(state, ["mode"], null)
+      return setIn(state, ["selectedTool"], action.selectedTool)
     }
     case "CANCEL": {
       const { mode } = state

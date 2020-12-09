@@ -1,6 +1,6 @@
 import React from 'react'
-import Annotator from '@rediminds/image-video-annotator'
-// import Annotator from '../Annotator/src/Annotator'; 
+// import Annotator from '@rediminds/image-video-annotator'
+import Annotator from '../Annotator/src/Annotator'; 
 import { images, labels } from './images'
 import Message from './message';
 const AppAnnotator = () => {

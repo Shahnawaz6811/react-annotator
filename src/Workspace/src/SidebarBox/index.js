@@ -13,13 +13,12 @@ import Typography from "@material-ui/core/Typography"
 import { useIconDictionary } from "../icon-dictionary.js"
 
 const useStyles = makeStyles({
-  container: { margin: 8, border: "1px solid #ccc" },
+
   header: {
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    padding: 8,
-    paddingLeft: 16,
+
     paddingRight: 16,
   },
   title: {
@@ -79,10 +78,10 @@ export const SidebarBox = ({
   const customIconMapping = useIconDictionary()
   const TitleIcon = customIconMapping[title.toLowerCase()]
   return (
-    <Paper className={classes.container}>
-      <div className={classes.header}>
+    <div className="dpfSidebar">
+      <div className="listHeader">
         {icon || <TitleIcon />}
-        <Typography className={classes.title}>
+        <Typography className="">
           {title} <span>{subTitle}</span>
         </Typography>
         {/* <IconButton onClick={toggleExpanded} className={classes.expandButton}>
@@ -99,7 +98,7 @@ export const SidebarBox = ({
       ) : (
         <Collapse in={expanded}>{content}</Collapse>
       )} */}
-    </Paper>
+    </div>
   )
 }
 

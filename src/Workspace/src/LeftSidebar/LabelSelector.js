@@ -24,7 +24,7 @@ const Chip = ({ color, text }) => {
   return (
     <span className={classes.chip}>
       <div className="color" style={{ backgroundColor: color }} />
-      <div className="text">{text}</div>
+      <div className="text dpfLabeltext">{text}</div>
     </span>
   )
 }
@@ -74,6 +74,7 @@ const RowLayout = ({
 const RowHeader = () => {
   return (
     <RowLayout
+    
       header
       highlighted={false}
       order={<ReorderIcon className="icon" />}
@@ -124,12 +125,12 @@ const Row = ({
                 
               })
             }
-            className="icon2"
+            className="icon2 lockIcon"
           />
         ) : (
           <UnlockIcon
             onClick={() => onChangeLabel({ ...r, locked: true })}
-            className="icon2"
+            className="icon2 UNlockIcon"
           />
         )
       }
@@ -142,12 +143,12 @@ const Row = ({
                 visible: false,
               })
             }
-            className="icon2"
+            className="icon2 visibleIocn"
           />
         ) : (
           <VisibleOffIcon
             onClick={() => onChangeLabel({ ...r, visible: true })}
-            className="icon2"
+            className="icon2 INvisibleIocn"
           />
         )
       }
@@ -223,8 +224,9 @@ export const RightSidebar = ({ state,
 
   return (
 
-          <div style={{height:'48%',overflowY:'scroll'}}>
-              <h4 style={{color:'red',margin:'10px'}}>Labels</h4>
+          <div className="labelRow">
+            <div>
+              <h4>Labels</h4>
           {state.regionClsList.map((r, i) => {
               const label = state.images[state.selectedImage].label
               let selected;
@@ -242,6 +244,7 @@ export const RightSidebar = ({ state,
                       onSelectLabel={onSelectLabel}
                   />)
           })}
+          </div>
         </div>
   )
 }

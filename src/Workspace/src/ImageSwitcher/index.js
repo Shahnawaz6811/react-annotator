@@ -4,7 +4,7 @@ import FooterButton from "../FooterButton"
 const ImageSwitcher = (props) => {
     const { dispatch,state } = props;
     return (
-        <div style={{ display: 'flex', alignItems: 'center',justifyContent:'center' }}>
+        <div className="imgSwitcher" >
         
         <FooterButton
                 key={1}

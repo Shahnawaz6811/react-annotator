@@ -1,6 +1,4 @@
-// @flow
-
-import  React,{ useReducer, useEffect } from "react"
+import React, { useReducer, useEffect } from "react"
 import type { Node } from "react"
 import MainLayout from "../MainLayout"
 import type {
@@ -38,7 +36,6 @@ type Props = {
   pointDistancePrecision?: number,
   RegionEditLabel?: Node,
   onSubmit: (MainLayoutState) => any,
-  onSave: (Object) => any,
   videoTime?: number,
   videoSrc?: string,
   keyframes?: Object,
@@ -58,15 +55,15 @@ export const Annotator = ({
   pointDistancePrecision,
   showTags = true,
   enabledTools = [
-    "pan",
-    "zoom-in",
-    "polygon",
+    "select",
+    "create-point",
+    "create-box",
+    "create-polygon",
+    "create-expanding-line",
     "show-mask",
     "free-hand"
   ],
-  renderError,
-  selectedTool = "pan",
-  jobName="",
+  selectedTool = "create-polygon",
   regionTagList = [],
   regionClsList = [],
   imageTagList = [],
@@ -79,7 +76,6 @@ export const Annotator = ({
   videoTime = 0,
   videoName,
   onSubmit,
-  onSave,
   onNextImage,
   onPrevImage,
   keypointDefinitions,
@@ -100,7 +96,6 @@ export const Annotator = ({
     makeImmutable({
       annotationType,
       showTags,
-      jobName,
       allowedArea,
       showPointDistances,
       pointDistancePrecision,
@@ -142,23 +137,8 @@ export const Annotator = ({
       if (action.buttonName === "submit") {
         return onSubmit(without(state, "history"))
       }
-      else if (action.buttonName === "save") {
-        const image = state.images[state.selectedImage];
-        console.log("Image: ",image)
-        var canvas = document.createElement("canvas");
-        canvas.width = image.dimen && image.dimen.width
-        canvas.height = image.dimen && image.dimen.height
-        var ctx = canvas.getContext("2d");
-        ctx.fillStyle = "white";
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-        var img = document.createElement("img");
-        img.setAttribute("src", "data:image/svg+xml;base64," + image.region_data);
-        img.onload = function() {
-            ctx.drawImage(img, 0, 0);
-          // console.log('ImageData', canvas.toDataURL("image/png"))
-          return onSave(image,canvas.toDataURL("image/png"))
-         };
-      }
+      // else if (action.buttonName === "save" && onNextImage) {
+      // }
         //   return onNextImage(without(state, "history"))
         // }
       // else if (action.buttonName === "Next" && onNextImage) {
@@ -196,7 +176,6 @@ export const Annotator = ({
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
         state={state}
-        renderError={renderError}
         dispatch={dispatch}
         onRegionClassAdded={onRegionClassAdded}
       />

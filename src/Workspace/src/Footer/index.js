@@ -8,12 +8,11 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 
 const Container = styled("div")({
-  width: "75%",
+  width: "93%",
   display: "flex",
   backgroundColor: "#fff",
-  borderBottom: "1px solid #ccc",
   alignItems: "center",
-  justifyContent:'space-around',
+  justifyContent:'space-between',
   flexShrink: 1,
   margin:'0 auto',
   boxSizing: "border-box",
@@ -43,7 +42,7 @@ export const Footer = ({
   let historyCache = state.historyCache[activeImage.name];
   
   return (
-    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
+    <div className="canvasNavigation" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
      
       
     <Container>
@@ -87,7 +86,7 @@ export const Footer = ({
       <FormControlLabel
         control={
           <Checkbox
-            checked={activeImage.shouldLabel ? true: false}
+            checked={activeImage.label}
             onChange={() => dispatch({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "nolabel",

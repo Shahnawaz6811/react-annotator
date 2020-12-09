@@ -17,18 +17,17 @@ const useStyles = makeStyles({
 
 export const ImageSelectorSidebarBox = ({ images, onSelect,state }) => {
   const classes = useStyles()
-  console.log("State: ", state);
   return (
     <SidebarBoxContainer
-      title={state.jobName || 'Job Name'}
+      title="Dr_John_Patient_Tom_Willims"
       subTitle={`(${images.length})`}
       icon={<CollectionsIcon style={{ color: red[700] }} />}
     >
       <div>
-        <List>
+        <ul className="dpfSidelist">
           {images.map((img, i) => (
-            <ListItem 
-            button
+            <li 
+            
               className={
                 `imageListItem ${i == state.selectedImage ? 'active' : ''}`
               }
@@ -38,9 +37,9 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state }) => {
               <ListItemText
                 primary={img.name}
               />
-            </ListItem>
+            </li>
           ))}
-        </List>
+        </ul>
       </div>
     </SidebarBoxContainer>
   )

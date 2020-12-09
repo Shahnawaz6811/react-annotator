@@ -25,19 +25,19 @@ type Props = {
 
 const RenderButton = ({item,onClickItem,activeImage,handleSlide,selectedTools}) => {
   const [showSlider, setShowSlider] = useState(false);
-  
+  console.log("selectedTools",selectedTools);
   return (
-    <div>
+    <div key={item.name}  className={
+      selectedTools.includes(item.name.toLowerCase())
+        ? "selectedTool"
+        : ""
+    }>
       <img
         src={iconMapping[item.name]}
         key={item.name}
         alt={item.name}
       style={{cursor:'pointer'}}
-      color={
-        item.selected || selectedTools.includes(item.name.toLowerCase())
-          ? "primary"
-          : "default"
-      }
+
       disabled={Boolean(item.disabled)}
         onClick={() => {
           const name = item.name;
@@ -66,11 +66,9 @@ export const Toolbar = ({
   return (
     <Container width={width}>
       {items.map((item) => {
-        console.log("Item:",item)
         let NameIcon =
           iconMapping[item.name.toLowerCase()] ||
           iconMapping["help"]
-        
 
         if (!item.helperText) return <RenderButton
           activeImage={activeImage}
@@ -81,6 +79,7 @@ export const Toolbar = ({
         return (
          
           <RenderButton
+            key={item.name}
             activeImage={activeImage}
             handleSlide={(e) => onFilterValueUpdate({ name: e.target.ariaLabel, value: e.target.value })}
             item={item}

@@ -1,77 +1,124 @@
-/* .App {
-  text-align: center;
+/* Data Prep Factory Css*/
+
+
+/* / css for sidebar only / */
+.dpfSidebar{
+    padding-right: 25px;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.dpfSidebar .listHeader {
+    display: flex;
+    align-items: center;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.dpfSidebar .listHeader p {
+    margin-left:8px ;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+
+.dpfSidelist{
+    margin-bottom: 0;
+    list-style: none;
+    padding:0;
+    margin-top: 20px;
 }
 
-.App-link {
-  color: #61dafb;
+.dpfSidelist li {
+    padding-left: 32px;
+    padding-bottom: 10px;
+    position: relative;
+    
+
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-} */
-
-svg:hover { fill: purple }
-
-
-
-
-/* body {
-}
-.App {
-  text-align: center;
+.dpfSidelist li span{
+    font-size: 12px;
+    cursor: pointer;
 }
 
-.App-header {
-  color: #589;
-  padding: 20px;
+.dpfSidelist li:hover span{
+    color:#81CDBA;
 }
 
-.App-title {
-  font-size: 1.5em;
+.dpfSidelist li:hover::before {
+    width: 0;
+	height: 0;
+	border-top: 6px solid transparent;
+	border-left: 12px solid #81CDBA;
+	border-bottom: 6px solid transparent;
+    position: absolute;
+    content: '';
+    left: 15px;
+    top:3px;
 }
 
-.App-body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
+
+/ end css for sidebar only /
+
+
+
+/ labels css bar  /
+
+.dpfLabelcol .labelRow h4{
+    margin-top: 4px;
+    color:#EA203E;
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 20px; 
+}
+.labelRow{
+    padding: 0 15px;
+    padding-bottom: 30px;
 }
 
-label {
-  padding: 10px;
-  width: 400px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+
+.dpfLabeltext{
+    font-weight: 500;
+    font-size: 14px;
+    color: #333333;
+
+
 }
-label input {
-  flex: 1;
-  padding: 10px;
-} */
+
+
+.visibleIocn, .INvisibleIocn {
+    height: 17px!important;
+}
+
+.lockIcon, .UNlockIcon {
+    height: 17px!important;
+}
+
+.deleteIocn{
+    height: 17px!important;
+}
+
+
+/ toobar css /
+
+.dpfToolbar{
+    border-bottom:2px solid #C4C4C4;   
+    padding-top: 10px;
+}
+
+.dpfToolbar > div {   
+    width: 100%;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+ 
+}
+
+
+
+.imgSwitcher{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.imgSwitcher p {
+    margin: 0;
+}

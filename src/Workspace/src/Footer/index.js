@@ -87,7 +87,7 @@ export const Footer = ({
       <FormControlLabel
         control={
           <Checkbox
-            checked={activeImage.label}
+            checked={activeImage.shouldLabel ? true: false}
             onChange={() => dispatch({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "nolabel",

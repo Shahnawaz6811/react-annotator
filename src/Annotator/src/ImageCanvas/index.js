@@ -185,28 +185,23 @@ export const ImageCanvas = ({
     mousePosition.current.y
   )
 
-  // useEffect(() => {
-  //   console.log("UseEfffecttt")
-  //   setTimeout(() => {
-  //     // changeMat(1);
-  //     // console.log('Mouse:',innerMousePos)
-  //     // zoomIn({ to:  }, mousePosition.current)    }, 5000);
-  // }, []);
-
   const projectRegionBox = useProjectRegionBox({ layoutParams, mat })
 
   const [imageDimensions, changeImageDimensions] = useState()
   const imageLoaded = Boolean(imageDimensions && imageDimensions.naturalWidth)
 
   const onVideoOrImageLoaded = useEventCallback(
-    ({ naturalWidth, naturalHeight, duration }) => {
-      const dims = { naturalWidth, naturalHeight, duration }
+    ({ naturalWidth, naturalHeight, duration,width,height }) => {
+      const dims = { naturalWidth, naturalHeight, duration,width,height }
+      console.log('DMS', dims);
       if (onImageOrVideoLoaded) onImageOrVideoLoaded(dims)
       changeImageDimensions(dims)
       // Redundant update to fix rerendering issues
       setTimeout(() => changeImageDimensions(dims), 10)
     }
   )
+
+  
 
   
 
@@ -225,7 +220,7 @@ export const ImageCanvas = ({
       imageDimensions.naturalWidth / fitScale,
       imageDimensions.naturalHeight / fitScale,
     ]
-
+    console.log('iwih',iw, ih)
     layoutParams.current = {
       iw,
       ih,
@@ -251,15 +246,14 @@ export const ImageCanvas = ({
   useLayoutEffect(() => {
     if (!imageDimensions) return
     const { clientWidth, clientHeight } = canvas
-    canvas.width = clientWidth
-    canvas.height = clientHeight
+    
     const context = canvas.getContext("2d")
 
     context.save()
     context.transform(...mat.clone().inverse().toArray())
 
     const { iw, ih } = layoutParams.current
-
+    
     if (allowedArea) {
       // Pattern to indicate the NOT allowed areas
       const { x, y, w, h } = allowedArea

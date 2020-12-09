@@ -58,15 +58,15 @@ export const Annotator = ({
   pointDistancePrecision,
   showTags = true,
   enabledTools = [
-    "select",
-    "create-point",
-    "create-box",
-    "create-polygon",
-    "create-expanding-line",
+    "pan",
+    "zoom-in",
+    "polygon",
     "show-mask",
     "free-hand"
   ],
-  selectedTool = "create-polygon",
+  renderError,
+  selectedTool = "pan",
+  jobName="",
   regionTagList = [],
   regionClsList = [],
   imageTagList = [],
@@ -100,6 +100,7 @@ export const Annotator = ({
     makeImmutable({
       annotationType,
       showTags,
+      jobName,
       allowedArea,
       showPointDistances,
       pointDistancePrecision,
@@ -142,17 +143,21 @@ export const Annotator = ({
         return onSubmit(without(state, "history"))
       }
       else if (action.buttonName === "save") {
-        const encodedData = state.images[state.selectedImage].region_data;
+        const image = state.images[state.selectedImage];
+        console.log("Image: ",image)
         var canvas = document.createElement("canvas");
-          canvas.width = 800
-          canvas.height = 500
-          var ctx = canvas.getContext( "2d" );
-          var img = document.createElement("img");
-          img.setAttribute("src", "data:image/svg+xml;base64," + encodedData);
-          img.onload = function() {
+        canvas.width = image.dimen && image.dimen.width
+        canvas.height = image.dimen && image.dimen.height
+        var ctx = canvas.getContext("2d");
+        ctx.fillStyle = "white";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        var img = document.createElement("img");
+        img.setAttribute("src", "data:image/svg+xml;base64," + image.region_data);
+        img.onload = function() {
             ctx.drawImage(img, 0, 0);
-            return onSave(state.images[state.selectedImage],canvas.toDataURL("image/png"))
-        };
+          // console.log('ImageData', canvas.toDataURL("image/png"))
+          return onSave(image,canvas.toDataURL("image/png"))
+         };
       }
         //   return onNextImage(without(state, "history"))
         // }
@@ -191,6 +196,7 @@ export const Annotator = ({
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
         state={state}
+        renderError={renderError}
         dispatch={dispatch}
         onRegionClassAdded={onRegionClassAdded}
       />

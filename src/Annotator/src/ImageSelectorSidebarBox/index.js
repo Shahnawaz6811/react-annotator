@@ -17,9 +17,10 @@ const useStyles = makeStyles({
 
 export const ImageSelectorSidebarBox = ({ images, onSelect,state }) => {
   const classes = useStyles()
+  console.log("State: ", state);
   return (
     <SidebarBoxContainer
-      title="Dr_John_Patient_Tom_Williams"
+      title={state.jobName || 'Job Name'}
       subTitle={`(${images.length})`}
       icon={<CollectionsIcon style={{ color: red[700] }} />}
     >

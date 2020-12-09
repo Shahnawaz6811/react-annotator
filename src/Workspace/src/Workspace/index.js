@@ -43,7 +43,7 @@ const Workspace = ({
   toolbarItems = emptyAr,
   selectedTools = ["select"],
   footerItems = emptyAr,
-  rightSidebarItems = emptyAr,
+  imageSelector = emptyAr,
   onClickFooterItem,
   onFilterValueUpdate,
   onClickToolbarItem,
@@ -69,7 +69,7 @@ const Workspace = ({
       <div style={{display:'flex'}}>
       <Container style={style}>
         <SidebarsAndContent>
-         {rightSidebarItems}
+         {imageSelector}
           
               <LeftSidebar state={state}
                 onSelectLabel={onSelectLabel}

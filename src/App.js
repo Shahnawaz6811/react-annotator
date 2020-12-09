@@ -1,14 +1,39 @@
 import './App.css';
 import Annotator from './components/Annotator';
-import ImageFilters from './components/ImageFilters';
-function App() {
-  return (
-    <div className="App">
-      <Annotator />
-        {/* <ImageFilters/> */}
+import { SnackbarProvider, withSnackbar } from 'notistack'
+import Message from './components/message';
+import React,{useEffect} from 'react'
 
-    </div>
+function AppCore(props) {
+  useEffect(() => {
+    Message.registerNotistakEnqueueSnackbar(
+      props.enqueueSnackbar
+    )
+  }, []);
+  return (
+      <Annotator />
   );
 }
 
+
+
+const App  = (props) => {
+
+    const AppWithSnackbar = withSnackbar(AppCore)
+
+    return (
+      <SnackbarProvider
+        maxSnack={3}
+        anchorOrigin={{
+          horizontal: 'right',
+          vertical: 'top'
+        }}
+      >
+        <AppWithSnackbar {...props} />
+      </SnackbarProvider>
+    )
+}
 export default App;
+
+
+

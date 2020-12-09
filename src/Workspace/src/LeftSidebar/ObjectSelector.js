@@ -120,7 +120,7 @@ const Row = ({
       area=""
       trash={
         (
-          <TrashIcon onClick={() => onDeleteObject(r)} className="icon2" />
+          <TrashIcon onClick={() => onDeleteObject(r)} className="icon2 deleteIocn" />
         )
       }
       
@@ -137,7 +137,7 @@ const Row = ({
             }
   
             }
-            className="icon2"
+            className="icon2 lockIcon"
           />
         ) : (
           <UnlockIcon
@@ -146,7 +146,7 @@ const Row = ({
 
                 onChangeObject({ ...r, locked: true })
               }}
-            className="icon2"
+            className="icon2 UNlockIcon"
           />
         )
       }
@@ -159,12 +159,12 @@ const Row = ({
                 visible: false,
               })
             }
-            className="icon2"
+            className="icon2 visibleIocn"
           />
         ) : (
           <VisibleOffIcon
             onClick={() => onChangeObject({ ...r, visible: true })}
-            className="icon2"
+            className="icon2 INvisibleIocn"
           />
         )
       }
@@ -242,8 +242,9 @@ export const RightSidebar = ({ state,
 
   return (
 
-            <div style={{height:'48%',borderTop:'1px solid gray',overflowY:'scroll'}}>
-          <h4 style={{ color: 'red', margin: '10px' }}>Objects</h4>
+            <div className="labelRow">
+              <div>
+          <h4>Objects</h4>
           {state.images[state.selectedImage].regions.map((r, i) => {
             {/* console.log("Region:", r); */ }
             
@@ -259,6 +260,7 @@ export const RightSidebar = ({ state,
               />
             )
           })}
+          </div>
               </div>
   )
 }

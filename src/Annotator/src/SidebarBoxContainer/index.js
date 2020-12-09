@@ -10,7 +10,7 @@ import { grey } from "@material-ui/core/colors"
 import classnames from "classnames"
 import useEventCallback from "use-event-callback"
 // import SidebarBox from "react-material-workspace-layout/SidebarBox"
-import SidebarBox from "@rediminds/react-material-workspace-layout/SidebarBox"
+import SidebarBox from "../../../Workspace/src/SidebarBox"
 
 
 const useStyles = makeStyles({

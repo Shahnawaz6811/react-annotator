@@ -195,16 +195,19 @@ export const RegionShapes = ({
 }) => {
   const svgRef = React.useRef(null);
   const svg = svgRef.current;
-  const iw = imagePosition.bottomRight.x - imagePosition.topLeft.x
-  const ih = imagePosition.bottomRight.y - imagePosition.topLeft.y
   useEffect(() => {
+    // const svg = document.getElementById("svg")
     if (svg) {
       var s = new XMLSerializer().serializeToString(svg); 
       var encodedData = window.btoa(s);
-      onRegionChange(encodedData,{width:iw,height:ih});          
+      // console.log("encodedData", encodedData)
+      onRegionChange(`data:image/svg+xml;base64,${encodedData}`);      
     }
+
   },[regions]);
-  
+
+  const iw = imagePosition.bottomRight.x - imagePosition.topLeft.x
+  const ih = imagePosition.bottomRight.y - imagePosition.topLeft.y
   if (isNaN(iw) || isNaN(ih)) return null
   
  

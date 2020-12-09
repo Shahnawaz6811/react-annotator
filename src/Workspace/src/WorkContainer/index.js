@@ -22,7 +22,7 @@ const ShadowOverlay = styled("div")({
 
 export const WorkContainer = React.forwardRef(({ children }, ref) => {
   return (
-    <Container ref={ref}>
+    <Container ref={ref} className="dpfCanvas">
       {children}
       <ShadowOverlay />
     </Container>

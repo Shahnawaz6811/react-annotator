@@ -41,7 +41,7 @@ export const HistorySidebarBox = ({
       icon={<HistoryIcon style={{ color: grey[700] }} />}
       expandedByDefault
     >
-      <List>
+      <List className="testList">
         {history.length === 0 && (
           <div className={classes.emptyText}>No History Yet</div>
         )}

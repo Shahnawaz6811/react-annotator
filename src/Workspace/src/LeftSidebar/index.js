@@ -167,15 +167,13 @@ const Row = ({
 
 
 const Container = styled("div")({
-  width: 300,
+
   display: "flex",
   flexDirection: "column",
-  height: '95%',
-  padding:'0 20px',
-  marginRight:'20px',
-  boxShadow: '0 2px 2px 0 rgba(0,0,0,0.2)',
+  padding:'0 10px',
+  borderLeft: '2px solid #C4C4C4',
+  borderRight: '2px solid #C4C4C4',
   transition: '0.3s',
-  marginTop:'30px',
   "&.expanded": {
     width: 300,
   },
@@ -231,8 +229,8 @@ export const LeftSidebar = ({ state,children, onDeleteObject,
   const containerStyle = useMemo(() => ({ height: height || "100%" }), [height])
 
   return (
-    <Container>
-      <InnerSliderContent>
+    <Container className="dpfLabelcol">
+      <InnerSliderContent >
         {/* Lables */}
          <LabelSelector state={state} onChangeLabel={onChangeLabel}
           onSelectLabel={onSelectLabel} />

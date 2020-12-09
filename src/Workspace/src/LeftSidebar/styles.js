@@ -25,7 +25,8 @@ export default {
     },
   },
   row: {
-    padding: 4,
+    // padding: 4,
+  
     cursor: "pointer",
     "&.header:hover": {
       // backgroundColor: blue[50],
@@ -41,16 +42,14 @@ export default {
   chip: {
     display: "flex",
     flexDirection: "row",
-    padding: 2,
-    borderRadius: 2,
-    paddingLeft: 4,
-    paddingRight: 4,
+  
+
+
     alignItems: "center",
     "& .color": {
-      borderRadius: 5,
-      width: 10,
-      height: 10,
-      marginRight: 4,
+      width: 11,
+      height: 11,
+      marginRight: 9,
     },
     "& .text": {},
   },

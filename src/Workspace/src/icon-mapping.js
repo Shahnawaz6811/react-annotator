@@ -1,3 +1,4 @@
+import React from 'react';
 import BackIcon from "@material-ui/icons/KeyboardArrowLeft"
 import NextIcon from "@material-ui/icons/KeyboardArrowRight"
 import UndoIcon from "@material-ui/icons/Undo"
@@ -13,14 +14,21 @@ import HotkeysIcon from "@material-ui/icons/Keyboard"
 
 
 
-import pan from './icons/Pan.svg';
-import zoomIn from './icons/Zoom_In.svg';
-import zoomOut from './icons/Zoom_Out.svg';
-import invert from './icons/Invert.svg';
-import polygon from './icons/Polygon.svg';
-import draw from './icons/Draw.svg';
-import brightness from './icons/Brightness.svg';
-import contrast from './icons/Contrast.svg';
+import { ReactComponent as Pan } from './icons/Pan.svg';
+import { ReactComponent as ZoomIn } from './icons/Zoom_In.svg';
+import { ReactComponent as ZoomOut } from './icons/Zoom_Out.svg';
+import { ReactComponent as Invert } from './icons/Invert.svg';
+import { ReactComponent as Polygon } from './icons/Polygon.svg';
+import { ReactComponent as Draw } from './icons/Draw.svg';
+import { ReactComponent as Brightness } from './icons/Brightness.svg';
+import { ReactComponent as Contrast } from './icons/Contrast.svg';
+import { ReactComponent as Next } from './icons/Next.svg';
+import { ReactComponent as Previous } from './icons/Previous.svg';
+import { ReactComponent as Redo } from './icons/Redo.svg';
+import { ReactComponent as Undo } from './icons/Undo.svg';
+
+
+
 
 
 
@@ -45,14 +53,70 @@ export const iconMapping = {
   clone: QueuePlayNextIcon,
   hotkeys: HotkeysIcon,
   shortcuts: HotkeysIcon,
-  pan: pan,
-    'zoom-in': zoomIn,
-    'zoom-out':zoomOut,
-    inverse:invert,
-    polygon:polygon,
-    draw:draw,
-    brightness:brightness,
-    contrast:contrast,
+  pan: Pan,
+  'zoom-in': ZoomIn,
+  'zoom-out': ZoomOut,
+  inverse: Invert,
+  polygon: Polygon,
+  draw: Draw,
+  brightness: Brightness,
+  contrast: Contrast,
 }
 
 export default iconMapping
+
+
+export const getIcon = (name, selected) => {
+  switch (name) {
+    case 'brightness':
+      return <Brightness
+        className={selected ? 'selected' : ''}
+        alt="close bubble"
+      />;
+    case 'pan':
+      return <Pan
+        className={selected ? 'selected' : ''}
+      />;
+    case 'zoom-in':
+      return <ZoomIn
+        className={selected ? 'selected' : ''}
+      />;
+    case 'zoom-out':
+      return <ZoomOut
+        className={selected ? 'selected' : ''}
+      />
+    case 'contrast':
+      return <Contrast
+        className={selected ? 'selected' : ''}
+      />;
+    case 'inverse':
+      return <Invert
+        className={selected ? 'selected' : ''}
+      />;
+    case 'draw':
+      return <Draw
+        className={selected ? 'selected' : ''}
+      />;
+    case 'polygon':
+      return <Polygon
+        className={selected ? 'selected' : ''}
+      />;
+    case 'Undo':
+      return <Undo
+        className={selected ? 'selected' : ''} />;
+
+    case 'Redo':
+      return <Redo
+        className={selected ? 'selected' : ''} />;
+
+    case 'Prev':
+      return <Previous
+        className={selected ? 'selected' : ''} />;
+
+
+    case 'Next':
+      return <Next
+        className={selected ? 'selected' : ''}
+      />;
+  }
+}

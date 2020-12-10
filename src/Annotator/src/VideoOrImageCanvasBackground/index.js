@@ -102,6 +102,7 @@ export default ({
   })
   const onImageLoaded = useEventCallback((event) => {
     const imageElm = event.currentTarget
+    // debugger;
     if (onLoad)
       onLoad({
         naturalWidth: imageElm.naturalWidth,
@@ -122,9 +123,9 @@ export default ({
   })
 
   const stylePosition = useMemo(() => {
+
     let width = imagePosition.bottomRight.x - imagePosition.topLeft.x
     let height = imagePosition.bottomRight.y - imagePosition.topLeft.y
-
     return {
       imageRendering: "pixelated",
       left: imagePosition.topLeft.x,

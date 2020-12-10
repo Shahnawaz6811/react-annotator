@@ -1,7 +1,11 @@
 import { grey } from "@material-ui/core/colors"
 
 export default {
-  canvas: { width: "100%", height: "100%", position: "relative", zIndex: 1 },
+  canvas: {
+    width: "100%", height: "100%", position: "relative",
+    zIndex: 1,
+    maxHeight: '55vh'   //Canvas height
+  },
   zoomIndicator: {
     position: "absolute",
     bottom: 16,

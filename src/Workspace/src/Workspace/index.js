@@ -17,7 +17,7 @@ const RightWorkContainer = styled("div")({
   position: "relative",
   height: "100%",
   width: '100%',
-  padding: '0 20px',
+  padding:'0 20px',
   // backgroundColor: grey[50],
   overflowY: "auto",
 })
@@ -29,14 +29,12 @@ const Container = styled("div")({
   padding: '5px',
   // height: "100vh",
   margin:'0 auto',
-  overflow: "hidden",
-  overflowY: 'scroll',
+  overflow: "hidden"
 })
 const SidebarsAndContent = styled("div")({
   display: "flex",
- 
   height: "100%",
-  width: "100%" ,
+  width: "100%",
   overflow: "hidden",
 })
 
@@ -45,7 +43,7 @@ const Workspace = ({
   toolbarItems = emptyAr,
   selectedTools = ["select"],
   footerItems = emptyAr,
-  rightSidebarItems = emptyAr,
+  imageSelector = emptyAr,
   onClickFooterItem,
   onFilterValueUpdate,
   onClickToolbarItem,
@@ -69,11 +67,13 @@ const Workspace = ({
   return (
     <IconDictionaryContext.Provider value={iconDictionary}>
       <div style={{display:'flex'}}>
-      <Container style={style} className="">
-        <SidebarsAndContent  className="dpfContainer ">
-         {rightSidebarItems}
+      <Container style={style}>
+        <SidebarsAndContent  className="dpfContainer">
+         {imageSelector}
           
-              <LeftSidebar className="dpfLeftsidebar" state={state}
+            <LeftSidebar
+              className="dpfLeftsidebar"
+              state={state}
                 onSelectLabel={onSelectLabel}
                 onDeleteObject={onDeleteObject}
                 onChangeLabel={onChangeLabel}
@@ -81,8 +81,11 @@ const Workspace = ({
                 onSelectObject={onSelectObject}
                 height={workContainerSize.height || 0}/>
           
-          <RightWorkContainer className="drawContainer">
-            <div>
+            <RightWorkContainer
+              className="drawContainer"
+            >
+              <div> 
+            
             {toolbarItems.length === 0 ? null : (
               <Toolbar
                 onClickItem={onClickToolbarItem}
@@ -93,7 +96,7 @@ const Workspace = ({
                 onFilterValueUpdate={onFilterValueUpdate}
               />
             )}
-              <WorkContainer className="test-main" ref={workContainerRef}>{children}</WorkContainer>
+              <WorkContainer ref={workContainerRef}>{children}</WorkContainer>
               {/* ${currentImageIndex+1}/${state.images.length}  */}
               <ImageSwitcher dispatch={dispatch} state={state}  />
               
@@ -104,7 +107,7 @@ const Workspace = ({
                 items={footerItems}
                 // onClickLabel={onClickLabel}
         />
-        </div>
+            </div>
           </RightWorkContainer>
 
         </SidebarsAndContent>

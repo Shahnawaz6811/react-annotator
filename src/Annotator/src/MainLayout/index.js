@@ -18,7 +18,7 @@ import { useDispatchHotkeyHandlers } from "../ShortcutsManager"
 import { withHotKeys } from "react-hotkeys"
 import iconDictionary from "./icon-dictionary"
 import KeyframeTimeline from "../KeyframeTimeline"
-import Workspace from "../../../Workspace/src/Workspace/"
+import Workspace from "../../../Workspace/src/Workspace/index"
 import DebugBox from "../DebugSidebarBox"
 import TagsSidebarBox from "../TagsSidebarBox"
 import KeyframesSelector from "../KeyframesSelectorSidebarBox"
@@ -61,6 +61,7 @@ export const MainLayout = ({
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
   RegionEditLabel,
+  renderError,
   onRegionClassAdded,
 }: Props) => {
   const classes = useStyles()
@@ -98,9 +99,9 @@ export const MainLayout = ({
   })
 
 
-  const onRegionChange = useEventCallback((regionData) => {
+  const onRegionChange = useEventCallback((regionData,imageDimen) => {
     // console.log('R: ', r);
-    dispatch({ type: "CHANGE_REGION_DATA",regionData})
+    dispatch({ type: "CHANGE_REGION_DATA",payload: {regionData,imageDimen}})
   })
 
   const isAVideoFrame = activeImage && activeImage.frameTime !== undefined
@@ -194,12 +195,21 @@ export const MainLayout = ({
   )
 
 const onClickToolbarItem = useEventCallback((item) => {
-  // console.log('item ', mouseEvents, item);
+  // console.log('item ', state,item);
   if (mouseEvents) {
     if (item.name === 'zoom-in') {
       mouseEvents.onWheel({deltaY:-0.25},{x:165, y: 237})
     } else if(item.name === 'zoom-out'){
       mouseEvents.onWheel({deltaY:0.25},{x:165, y: 237})
+    }
+    else if (item.name === 'polygon') {
+      const image = state.images[currentImageIndex];
+      if (!image.label) {
+        // alert("Please select any label");
+        renderError('Please select any label')
+        return;
+      } 
+      console.log("Poly",image);
     }
   }
   
@@ -283,11 +293,9 @@ const onClickFooterItem = useEventCallback((item) => {
         onSubmit={onSubmit}
         onClickToolbarItem={onClickToolbarItem}
         onFilterValueUpdate={(filter)=>dispatch({type:'UPDATE_FILTER',payload:filter})}
-            selectedTools={[
-              state.selectedTool,
-              state.showTags && "show-tags",
-              state.showMask && "show-mask",
-            ].filter(Boolean)}
+            selectedTools={
+              state.selectedTool
+            }
         toolbarItems={[
          
             {
@@ -337,9 +345,9 @@ const onClickFooterItem = useEventCallback((item) => {
               .filter(
                 (a) => a.alwaysShowing || state.enabledTools.includes(a.name)
               )}
-            rightSidebarItems={[
+              imageSelector={[
              
-((state.images && state.images.length) || 0) > 1 && (
+          ((state.images && state.images.length) || 0) > 1 && (
                 <ImageSelector
                 key={3}
                   state={state}

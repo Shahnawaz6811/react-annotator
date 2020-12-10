@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography"
 import { useIconDictionary } from "../icon-dictionary.js"
 
 const useStyles = makeStyles({
-
+  
   header: {
     display: "flex",
     flexDirection: "row",
@@ -47,8 +47,8 @@ const useStyles = makeStyles({
     },
   },
   expandedContent: {
-    maxHeight: 300,
-    overflowY: "auto",
+    // maxHeight: 300,
+    // overflowY: "auto",
     "&.noScroll": {
       overflowY: "visible",
       overflow: "visible",

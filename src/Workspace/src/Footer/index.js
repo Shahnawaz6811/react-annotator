@@ -44,7 +44,7 @@ export const Footer = ({
   return (
     <div className="canvasNavigation" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
      
-      
+
     <Container>
      
       <FooterButton
@@ -53,7 +53,6 @@ export const Footer = ({
                 buttonName: "Undo",
           })}
           name="Undo"
-          showLabel={true}
           disabled={!activeRegions}
         />
 
@@ -62,7 +61,6 @@ export const Footer = ({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "redo",
           })}
-          showLabel={true}
           name="Redo"
           disabled={historyCache ? Array.isArray(historyCache) && historyCache.length === 0 : true}
         />
@@ -70,6 +68,7 @@ export const Footer = ({
         <Button
           variant="contained"
           color="primary"
+          className={activeRegions ? "dpfBtn" : ''}
           disabled={!activeRegions}
           onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "reset" })}
           >
@@ -78,15 +77,18 @@ export const Footer = ({
         
         <Button variant="contained"
           color="primary"
-          disabled={!activeRegions}
+          className={!!activeImage.shouldLabel ? "dpfBtn": !activeRegions ? '' : 'dpfBtn'}
+          disabled={!!activeImage.shouldLabel ? false : !activeRegions} 
           onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "save" })}
           >
         Save
       </Button>
       <FormControlLabel
         control={
-          <Checkbox
-            checked={activeImage.label}
+            <Checkbox
+          className="dpfDrawLabel"
+              
+            checked={activeImage.shouldLabel ? true: false}
             onChange={() => dispatch({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "nolabel",
@@ -98,6 +100,7 @@ export const Footer = ({
         label="Nothing to label"
       />
         <Button variant="contained"
+          className="dpfSubmitbtn"
           onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "submit" })}
           disabled={!activeRegions} color="primary"
           >

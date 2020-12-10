@@ -17,19 +17,19 @@ const useStyles = makeStyles({
 
 export const ImageSelectorSidebarBox = ({ images, onSelect,state }) => {
   const classes = useStyles()
+  // console.log("Selected");
   return (
     <SidebarBoxContainer
-      title="Dr_John_Patient_Tom_Willims"
+      title={state.jobName || 'Job Name'}
       subTitle={`(${images.length})`}
       icon={<CollectionsIcon style={{ color: red[700] }} />}
     >
       <div>
         <ul className="dpfSidelist">
           {images.map((img, i) => (
-            <li 
-            
+            <li
               className={
-                `imageListItem ${i == state.selectedImage ? 'active' : ''}`
+                `imageListItem ${i === state.selectedImage ? 'imageSelectItem' : ''}`
               }
               onClick={() => onSelect(img, i)}
               key={i}>
@@ -47,9 +47,16 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state }) => {
 
 const mapUsedImageProps = (a) => [a.name, (a.regions || []).length, a.src]
 
-export default memo(ImageSelectorSidebarBox, (prevProps, nextProps) =>
-  isEqual(
+// export default ImageSelectorSidebarBox;
+export default memo(ImageSelectorSidebarBox, (prevProps, nextProps) => {
+
+  return isEqual(
     prevProps.images.map(mapUsedImageProps),
-    nextProps.images.map(mapUsedImageProps)
+    nextProps.images.map(mapUsedImageProps),
+  ) && isEqual(
+    prevProps.state.selectedImage,
+    nextProps.state.selectedImage,
   )
+ }
+  
 )

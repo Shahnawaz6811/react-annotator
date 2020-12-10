@@ -1,9 +1,9 @@
 import React,{useState} from "react"
 import { styled } from "@material-ui/core/styles"
-import { iconMapping } from "../icon-mapping.js"
-
-
+import { iconMapping,getIcon } from "../icon-mapping.js"
 import Slider from './Slider';
+
+
 
 
 const Container = styled("div")({
@@ -25,31 +25,27 @@ type Props = {
 }
 
 
+
+
 const RenderButton = ({item,onClickItem,activeImage,handleSlide,selectedTools}) => {
   const [showSlider, setShowSlider] = useState(false);
-  console.log("Item", item);
-  
   return (
-    <div >
-      <img
-        src={iconMapping[item.name]}
-        key={item.name}
-        alt={item.name}
-      style={{cursor:'pointer'}}
-      className={
-        item.selected || selectedTools.includes(item.name.toLowerCase())
-          ? "selectedToolbar"
-          : ""
-      }
-      disabled={Boolean(item.disabled)}
-        onClick={() => {
+    <div key={item.name}
+       onClick={() => {
           const name = item.name;
           if (name === 'brightness' || name === 'contrast') {
            setShowSlider(show => !show);
           }
          return item.onClick ? item.onClick : onClickItem(item)}
       } 
-    />      
+      className={
+      selectedTools.includes(item.name.toLowerCase())
+        ? "selectedTool"
+        : ""
+    }>
+      
+      {getIcon(item.name,selectedTools.includes(item.name.toLowerCase())
+        )}
         
      {showSlider && <Slider id={item.name} activeImage={activeImage} onChange={handleSlide}/> }   
     </div>
@@ -67,13 +63,11 @@ export const Toolbar = ({
 }: Props) => {
 
   return (
-    <Container className="dpfToolbar" width={width}>
+    <Container width={width} className="dpfToolbar">
       {items.map((item) => {
-        console.log("Item:",item)
         let NameIcon =
           iconMapping[item.name.toLowerCase()] ||
           iconMapping["help"]
-        
 
         if (!item.helperText) return <RenderButton
           activeImage={activeImage}
@@ -84,6 +78,7 @@ export const Toolbar = ({
         return (
          
           <RenderButton
+            key={item.name}
             activeImage={activeImage}
             handleSlide={(e) => onFilterValueUpdate({ name: e.target.ariaLabel, value: e.target.value })}
             item={item}
@@ -96,5 +91,3 @@ export const Toolbar = ({
 }
 
 export default Toolbar
-
-

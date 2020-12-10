@@ -111,7 +111,8 @@ const Row = ({
         onSelectLabel(r)
       }}
 
-      classification={<Chip text={r.cls || ""} color={r.color || "#ddd"} />}
+      classification={<Chip text={r.cls || ""}
+      color={r.color || "#ddd"} />}
       area=""
       
       lock={

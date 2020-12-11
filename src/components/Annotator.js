@@ -9,7 +9,7 @@ const AppAnnotator = (props) => {
     // console.log("Props:", params);
 
     return (
-        <Route path={`/:job/:asset/`} exact >
+        // <Route path={`/:job/:asset/`} exact >
 
         <div>
             <Annotator images={images}
@@ -26,7 +26,7 @@ const AppAnnotator = (props) => {
                 }}
                 onSubmit={(state) => console.log('Submit: ',state)} />
             </div>
-        </Route>
+        // </Route>
             
     )
 }

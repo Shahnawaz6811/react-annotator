@@ -52,11 +52,11 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state,history }) => {
       }
     }
   },[])
-  
+
   useEffect(() => {
 
     const { location: { pathname } } = history;
-   
+
     // console.log("History: ", history.location);
     history.listen(() => {
       // console.log("Listeningg",history.location.key);
@@ -73,7 +73,7 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state,history }) => {
           // console.log("Exis:", imageIndex);
            onSelect(images[imageIndex], imageIndex)
           }
-      
+
         } else {
           const job = pathname.split('/')[1];
           if (job) {
@@ -90,10 +90,6 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state,history }) => {
   }, []);
 
 
-  // useEffect(() => {
-  //   console.log('> Router', history.action, history.location)
-  // }, [history.location.key])
-
   return (
     <SidebarBoxContainer
       title={jobName || 'Job Name'}
@@ -104,7 +100,7 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state,history }) => {
         <ul className="dpfSidelist">
           {images.map((img, i) => (
             <Link
-          
+
               to={`/${jobName}/${img.name}`}
               className={
                 `imageListItem ${i === state.selectedImage ? 'imageSelectItem' : ''}`
@@ -136,5 +132,5 @@ export default memo(ImageSelectorSidebarBox, (prevProps, nextProps) => {
     nextProps.state.selectedImage,
   )
  }
-  
+
 )

@@ -57,6 +57,7 @@ export const Annotator = ({
   showPointDistances,
   pointDistancePrecision,
   showTags = true,
+  history,
   enabledTools = [
     "pan",
     "zoom-in",
@@ -118,7 +119,7 @@ export const Annotator = ({
       imageTagList,
       currentVideoTime: videoTime,
       enabledTools,
-      history: [],
+      history,
       historyCache:{},
       videoName,
       keypointDefinitions,
@@ -147,25 +148,31 @@ export const Annotator = ({
       else if (action.buttonName === "save") {
         
         const image = state.images[state.selectedImage];
-       
-        console.log("Image: ",image)
+        // console.log("Image: ", image)
+        
+        //Create white canvas with original image dimen
         var canvas = document.createElement("canvas");
-        canvas.width = image.dimen && image.dimen.width
-        canvas.height = image.dimen && image.dimen.height
-        console.log("Canvas", canvas.width, canvas.height);
+        canvas.width = image.pixelSize.w
+        canvas.height = image.pixelSize.h
         var ctx = canvas.getContext("2d");
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
+        // console.log("Canvas Dimen", canvas.width, canvas.height);
+
+
+
+        if (!image.region_data || image.nothingToLabel) {
+          // console.log("No data");
+          //return blank canvas data if image has no regions.
+          return onSave(image,canvas.toDataURL("image/png"))
+        }
+       
+        // Draw image on canvas 
         var img = document.createElement("img");
         img.setAttribute("src", "data:image/svg+xml;base64," + image.region_data);
         
         img.onload = function () {
-
-          if (image.shouldLabel) {
-            ctx.drawImage(img, 0, 0,canvas.width,canvas.height);
-          } else {
-            
-          }
+          ctx.drawImage(img, 0, 0,canvas.width,canvas.height);
           // console.log('ImageData', canvas.toDataURL("image/png"))
           return onSave(image,canvas.toDataURL("image/png"))
          };
@@ -190,11 +197,11 @@ export const Annotator = ({
 
   useEffect(() => {
     if (selectedImage === undefined) return
-    dispatchToReducer({
-      type: "SELECT_IMAGE",
-      imageIndex: selectedImage,
-      image: state.images[selectedImage],
-    })
+    // dispatchToReducer({
+    //   type: "SELECT_IMAGE",
+    //   imageIndex: selectedImage,
+    //   image: state.images[selectedImage],
+    // })
   }, [selectedImage])
 
   if (!images && !videoSrc)
@@ -207,6 +214,7 @@ export const Annotator = ({
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
         state={state}
+        history={history}
         renderError={renderError}
         dispatch={dispatch}
         onRegionClassAdded={onRegionClassAdded}

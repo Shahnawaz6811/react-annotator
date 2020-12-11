@@ -27,11 +27,12 @@ type Props = {
 
 
 
-const RenderButton = ({item,onClickItem,activeImage,handleSlide,selectedTools}) => {
+const RenderButton = ({ item, onClickItem, activeImage, handleSlide, selectedTools }) => {
   const [showSlider, setShowSlider] = useState(false);
   return (
     <div key={item.name}
-       onClick={() => {
+      style={{userSelect: "none"}}
+      onClick={(e) => {
           const name = item.name;
           if (name === 'brightness' || name === 'contrast') {
            setShowSlider(show => !show);

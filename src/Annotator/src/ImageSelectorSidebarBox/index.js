@@ -1,6 +1,6 @@
 // @flow
 
-import React, { memo } from "react"
+import React, { memo,useEffect,useLayoutEffect } from "react"
 import { makeStyles } from "@material-ui/core/styles"
 import SidebarBoxContainer from "../SidebarBoxContainer"
 import CollectionsIcon from "@material-ui/icons/Folder"
@@ -10,24 +10,102 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import Avatar from "@material-ui/core/Avatar"
 import isEqual from "lodash/isEqual"
+import {Link } from 'react-router-dom';
 
 const useStyles = makeStyles({
   img: { width: 170, height: 40, marginLeft:30, borderRadius: 8 },
 })
 
-export const ImageSelectorSidebarBox = ({ images, onSelect,state }) => {
+export const ImageSelectorSidebarBox = ({ images, onSelect,state,history }) => {
   const classes = useStyles()
-  // console.log("Selected");
+  // console.log("Selected", images);
+  const jobName = state.jobName;
+  // console.log("history: ", history);
+
+
+
+  useLayoutEffect(() => {
+    const { location: { pathname } } = history;
+    // console.log("history: ", history);
+    if (pathname) {
+      let imageName = pathname.split('/')[2];
+      if (imageName) {
+        let imageIndex = images.findIndex(image => image.name === imageName);
+
+        if (imageIndex > 0) {
+          setTimeout(() => {
+            onSelect(images[imageIndex], imageIndex)
+          }, 2);
+        } else {
+          // Invalid image
+          history.push(images[0].name)
+        }
+      }
+      else {
+        const job = pathname.split('/')[1];
+        // console.log('JOb',job)
+        if (job) {
+          history.push(images[0].name)
+        } else {
+          history.push(`${jobName}/${images[0].name}`)
+        }
+      }
+    }
+  },[])
+  
+  useEffect(() => {
+
+    const { location: { pathname } } = history;
+   
+    // console.log("History: ", history.location);
+    history.listen(() => {
+      // console.log("Listeningg",history.location.key);
+      // console.log("Listeningg", history.location);
+      const { location: { pathname } } = history;
+      // console.log("Path: ", pathname);
+      if (pathname) {
+        let imageName = pathname.split('/')[2];
+        if (imageName) {
+          // Check if we have image of given name
+          let imageIndex = images.findIndex(image => image.name === imageName);
+          // console.log('INdex: ', imageIndex);
+          if (imageIndex > 0) {
+          // console.log("Exis:", imageIndex);
+           onSelect(images[imageIndex], imageIndex)
+          }
+      
+        } else {
+          const job = pathname.split('/')[1];
+          if (job) {
+            history.push(images[0].name)
+            onSelect(images[0], 0)
+          }else{
+          history.push(`${jobName}/${images[0].name}`)
+
+          }
+        }
+      }
+
+    })
+  }, []);
+
+
+  // useEffect(() => {
+  //   console.log('> Router', history.action, history.location)
+  // }, [history.location.key])
+
   return (
     <SidebarBoxContainer
-      title={state.jobName || 'Job Name'}
+      title={jobName || 'Job Name'}
       subTitle={`(${images.length})`}
       icon={<CollectionsIcon style={{ color: red[700] }} />}
     >
       <div>
         <ul className="dpfSidelist">
           {images.map((img, i) => (
-            <li
+            <Link
+          
+              to={`/${jobName}/${img.name}`}
               className={
                 `imageListItem ${i === state.selectedImage ? 'imageSelectItem' : ''}`
               }
@@ -37,7 +115,7 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state }) => {
               <ListItemText
                 primary={img.name}
               />
-            </li>
+            </Link>
           ))}
         </ul>
       </div>

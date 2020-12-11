@@ -77,8 +77,8 @@ export const Footer = ({
         
         <Button variant="contained"
           color="primary"
-          className={!!activeImage.shouldLabel ? "dpfBtn": !activeRegions ? '' : 'dpfBtn'}
-          disabled={!!activeImage.shouldLabel ? false : !activeRegions} 
+          className={!!activeImage.nothingToLabel ? "dpfBtn": !activeRegions ? '' : 'dpfBtn'}
+          disabled={!!activeImage.nothingToLabel ? false : !activeRegions} 
           onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "save" })}
           >
         Save
@@ -88,7 +88,7 @@ export const Footer = ({
             <Checkbox
           className="dpfDrawLabel"
               
-            checked={activeImage.shouldLabel ? true: false}
+            checked={activeImage.nothingToLabel ? true: false}
             onChange={() => dispatch({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "nolabel",

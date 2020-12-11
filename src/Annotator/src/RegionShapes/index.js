@@ -40,7 +40,7 @@ const RegionComponents = {
           .map(([x, y]) => [x * iw, y * ih])
           .map((a) => a.join(" "))
           .join(" ")}
-        strokeWidth={2}
+        strokeWidth={0}
         stroke={colorAlpha(region.color, 0.75)}
         fill={colorAlpha(region.color, 0.25)}
       />
@@ -172,7 +172,7 @@ export const WrappedRegionList = memo(
         const Component = RegionComponents[r.type]
         return (
           <Component
-            key={r.regionId}
+            key={r.id}
             region={r}
             iw={iw}
             ih={ih}
@@ -199,7 +199,6 @@ export const RegionShapes = ({
   const ih = imagePosition.bottomRight.y - imagePosition.topLeft.y
   useEffect(() => {
     if (svg) {
-      console.log('S: ', svg);
       var s = new XMLSerializer().serializeToString(svg); 
       var encodedData = window.btoa(s);
       onRegionChange(encodedData,{width:iw,height:ih});          

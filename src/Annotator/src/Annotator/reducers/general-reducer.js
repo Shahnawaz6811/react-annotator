@@ -973,11 +973,11 @@ const generalReducer = (state, action) => {
         }
 
         case 'nolabel': {
-          const shouldLabel = state.images[currentImageIndex].shouldLabel;
+          const nothingToLabel = state.images[currentImageIndex].nothingToLabel;
       return setIn(
         state,
-        ["images", currentImageIndex, "shouldLabel"],
-        !shouldLabel
+        ["images", currentImageIndex, "nothingToLabel"],
+        !nothingToLabel
       )
         }
         

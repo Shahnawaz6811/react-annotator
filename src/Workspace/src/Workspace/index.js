@@ -49,6 +49,7 @@ const Workspace = ({
   onClickToolbarItem,
   activeImage,
   state,
+  history,
   dispatch,
   onSubmit,
   onClickLabel,
@@ -98,7 +99,7 @@ const Workspace = ({
             )}
               <WorkContainer ref={workContainerRef}>{children}</WorkContainer>
               {/* ${currentImageIndex+1}/${state.images.length}  */}
-              <ImageSwitcher dispatch={dispatch} state={state}  />
+              <ImageSwitcher dispatch={dispatch} history={history} state={state}  />
               
             <Footer
                 state={state}

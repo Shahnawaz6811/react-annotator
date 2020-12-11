@@ -61,6 +61,7 @@ export const MainLayout = ({
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
   RegionEditLabel,
+  history,
   renderError,
   onRegionClassAdded,
 }: Props) => {
@@ -253,6 +254,7 @@ const onSubmit = useEventCallback(() => {
 
 
 const onClickFooterItem = useEventCallback((item) => {
+
     console.log(item);
     dispatch({ type: "FOOTER_BUTTON_CLICKED", buttonName: item.name })
   })
@@ -264,7 +266,9 @@ const onClickFooterItem = useEventCallback((item) => {
   return (
     <FullScreenContainer>    
           <Workspace
-            iconDictionary={iconDictionary}
+        iconDictionary={iconDictionary}
+        history={history}
+      
         activeImage={activeImage}
         dispatch={dispatch}
         onSelectLabel={onSelectLabel}
@@ -348,7 +352,8 @@ const onClickFooterItem = useEventCallback((item) => {
               imageSelector={[
              
           ((state.images && state.images.length) || 0) > 1 && (
-                <ImageSelector
+                  <ImageSelector
+                  history={history}
                 key={3}
                   state={state}
                   onSelect={(img, position) => {

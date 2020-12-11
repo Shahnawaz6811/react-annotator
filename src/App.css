@@ -4,6 +4,8 @@
 /* / css for sidebar only / */
 .dpfSidebar{
     padding-right: 25px;
+    max-width: 300px;
+    width: 25%;
 }
 
 .dpfSidebar .listHeader {
@@ -25,15 +27,19 @@
     margin-top: 20px;
 }
 
-.dpfSidelist li {
-    padding-left: 32px;
+.dpfSidelist a {
+    padding-left: 40px;
     padding-bottom: 10px;
     position: relative;
-    
-
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-.dpfSidelist li span{
+.dpfSidelist a span{
     font-size: 12px;
     cursor: pointer;
 }

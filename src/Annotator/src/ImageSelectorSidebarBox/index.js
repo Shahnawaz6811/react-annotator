@@ -102,7 +102,7 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state,useHistory }) =
           {images.map((img, i) => (
             <Link
 
-              to={`/${jobName}/${img.name}`}
+              to={`${jobName}/${img.name}`}
               className={
                 `imageListItem ${i === state.selectedImage ? 'imageSelectItem' : ''}`
               }

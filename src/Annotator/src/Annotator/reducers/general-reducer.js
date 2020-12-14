@@ -166,6 +166,12 @@ const generalReducer = (state, action) => {
 
       return state;
     }
+
+    case 'IMAGE_LOADED': {
+      const { loading } = action;
+      state = setIn(state, [...pathToActiveImage, "loading"], loading)
+      return state;
+    }
     
 
     case 'CHANGE_REGION_DATA': {

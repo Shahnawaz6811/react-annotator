@@ -54,7 +54,6 @@ export default ({
       videoRef.current.currentTime = (videoTime || 0) / 1000
     }
   }, [videoTime])
-
   useEffect(() => {
     let renderLoopRunning = false
     if (videoRef.current) {
@@ -157,7 +156,7 @@ export default ({
     <div>
       <LoadingOverlay
           className="loadingOverlay"
-				active={loading}
+				active={activeImage.loading === false ? false:true}
         styles={{
 								overlay: (base) => ({
 									...base,

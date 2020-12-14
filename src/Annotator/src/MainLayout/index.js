@@ -145,7 +145,10 @@ export const MainLayout = ({
       activeImage={activeImage}
       realSize={activeImage ? activeImage.realSize : undefined}
       videoPlaying={state.videoPlaying}
-      onNewImageLoaded={(events) =>setMouseEvents(events)}
+      onNewImageLoaded={(events) => { 
+        dispatch({type:'IMAGE_LOADED',loading:false})
+        setMouseEvents(events)
+      }}
       imageSrc={state.annotationType === "image" ? activeImage.src : null}
       videoSrc={state.annotationType === "video" ? state.videoSrc : null}
       pointDistancePrecision={state.pointDistancePrecision}

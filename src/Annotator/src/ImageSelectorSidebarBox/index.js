@@ -16,16 +16,17 @@ const useStyles = makeStyles({
   img: { width: 170, height: 40, marginLeft:30, borderRadius: 8 },
 })
 
-export const ImageSelectorSidebarBox = ({ images, onSelect,state,history }) => {
+export const ImageSelectorSidebarBox = ({ images, onSelect,state,useHistory }) => {
   const classes = useStyles()
   // console.log("Selected", images);
+  const history = useHistory();
   const jobName = state.jobName;
   // console.log("history: ", history);
+  const { location: { pathname } } = history;
 
 
 
   useLayoutEffect(() => {
-    const { location: { pathname } } = history;
     // console.log("history: ", history);
     if (pathname) {
       let imageName = pathname.split('/')[2];

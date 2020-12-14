@@ -2,8 +2,8 @@ import React from 'react'
 import FooterButton from "../FooterButton"
 
 const ImageSwitcher = (props) => {
-    const { dispatch, state, history } = props;
-    
+    const { dispatch, state, useHistory } = props;
+    const history = useHistory();
     return (
         <div className="imgSwitcher">
         

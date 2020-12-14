@@ -61,7 +61,7 @@ export const MainLayout = ({
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
   RegionEditLabel,
-  history,
+  useHistory,
   renderError,
   onRegionClassAdded,
 }: Props) => {
@@ -213,7 +213,6 @@ const onClickToolbarItem = useEventCallback((item) => {
         renderError('Please select any label')
         return;
       } 
-      console.log("Poly",image);
     }
   }
   
@@ -270,7 +269,7 @@ const onClickFooterItem = useEventCallback((item) => {
     <FullScreenContainer>    
           <Workspace
         iconDictionary={iconDictionary}
-        history={history}
+        useHistory={useHistory}
       
         activeImage={activeImage}
         dispatch={dispatch}
@@ -356,7 +355,7 @@ const onClickFooterItem = useEventCallback((item) => {
              
           ((state.images && state.images.length) || 0) > 1 && (
                   <ImageSelector
-                  history={history}
+                  useHistory={useHistory}
                 key={3}
                   state={state}
                   onSelect={(img, position) => {

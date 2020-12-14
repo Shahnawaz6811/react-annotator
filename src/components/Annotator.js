@@ -18,7 +18,7 @@ const AppAnnotator = (props) => {
                 renderError={(error) => {
                     // Message.error(error)
                 }}
-                history={history}
+                useHistory={()=> history}
                 onSave={(selectedImage, encodedData) => {
                     // console.log('Encoded data', encodedData);
                     // alert('Changes saved successfully.')

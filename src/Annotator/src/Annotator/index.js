@@ -81,6 +81,7 @@ export const Annotator = ({
   videoName,
   onSubmit,
   onSave,
+  useHistory,
   onNextImage,
   onPrevImage,
   keypointDefinitions,
@@ -214,7 +215,7 @@ export const Annotator = ({
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
         state={state}
-        history={history}
+        useHistory={useHistory}
         renderError={renderError}
         dispatch={dispatch}
         onRegionClassAdded={onRegionClassAdded}

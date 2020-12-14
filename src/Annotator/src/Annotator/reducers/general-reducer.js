@@ -162,7 +162,6 @@ const generalReducer = (state, action) => {
     case 'SUBMIT': {
 
       const regionData = getIn(state, [...pathToActiveImage, "region_data"])
-      console.log("Data: ", regionData);
 
       return state;
     }
@@ -837,7 +836,6 @@ const generalReducer = (state, action) => {
       
     case 'CLICK_LABEL': {
       const label = state.images[currentImageIndex].label;
-      console.log("Label", label);
       return setIn(
         state,
         ["images", currentImageIndex, "label"],
@@ -974,7 +972,6 @@ const generalReducer = (state, action) => {
         }
 
         case "save": {
-          console.log("Save");
           return state
         }
 

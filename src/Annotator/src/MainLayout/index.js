@@ -257,7 +257,6 @@ const onSubmit = useEventCallback(() => {
 
 const onClickFooterItem = useEventCallback((item) => {
 
-    console.log(item);
     dispatch({ type: "FOOTER_BUTTON_CLICKED", buttonName: item.name })
   })
 

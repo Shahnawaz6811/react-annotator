@@ -24,7 +24,9 @@ const AppAnnotator = (props) => {
                     // alert('Changes saved successfully.')
 
                 }}
-                onSubmit={(state) => console.log('Submit: ',state)} />
+                onSubmit={(state) => {
+                    
+                }} />
             </div>
         // </Route>
             

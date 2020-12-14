@@ -3,6 +3,8 @@ import FooterButton from "../FooterButton"
 
 const ImageSwitcher = (props) => {
     const { dispatch, state, useHistory } = props;
+    const currentImageIndex = state.selectedImage;
+
     const history = useHistory();
     return (
         <div className="imgSwitcher">
@@ -10,15 +12,15 @@ const ImageSwitcher = (props) => {
         <FooterButton
 
                 name="Prev"
+                disabled={currentImageIndex === 0}
                 onClick={() => {
-                   
+                    
                     dispatch({
                         type: "FOOTER_BUTTON_CLICKED",
                         buttonName: "Prev",
                     })
-                    const currentImage = state.selectedImage;
-                    if (currentImage > 0) {
-                        history.push(`${state.images[currentImage - 1].name}`)      
+                    if (currentImageIndex > 0) {
+                        history.push(`${state.images[currentImageIndex - 1].name}`)      
                     }
                 }
             }
@@ -27,13 +29,13 @@ const ImageSwitcher = (props) => {
             <p>{`${state.selectedImage+1}/${state.images.length} `}</p>
         }
          <FooterButton
-            name="Next"
+                name="Next"
+                disabled={currentImageIndex === state.images.length - 1}
                 onClick={() => {
                     dispatch({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "Next",
                     })
-                    const currentImageIndex = state.selectedImage;
                     if (currentImageIndex < state.images.length - 1) {
                         history.push(`${state.images[currentImageIndex + 1].name}`)      
 

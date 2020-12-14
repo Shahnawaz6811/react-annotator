@@ -103,10 +103,12 @@ export const getIcon = (name, selected) => {
       />;
     case 'Undo':
       return <Undo
-        className={selected ? 'selected' : ''} />;
+        style={selected ? {fill:'gray',cursor:'default'}: {}}
+        className={selected ? 'disabled' : ''} />;
 
     case 'Redo':
       return <Redo
+        style={selected ? {fill:'gray',cursor:'default'}: {}}
         className={selected ? 'selected' : ''} />;
 
     case 'Prev':

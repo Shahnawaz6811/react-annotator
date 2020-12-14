@@ -48,19 +48,33 @@ export const Footer = ({
     <Container>
      
       <FooterButton
-          onClick={() => dispatch({
+          onClick={() => {
+            if (!activeRegions) {
+              return
+            }
+            dispatch({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "Undo",
-          })}
+          })
+          }
+            
+          }
           name="Undo"
           disabled={!activeRegions}
         />
 
       <FooterButton
-          onClick={() => dispatch({
+          onClick={() => {
+            const disabled = historyCache ? Array.isArray(historyCache) && historyCache.length === 0 : true;
+            if (disabled) {
+              return
+            }
+            dispatch({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "redo",
-          })}
+            })
+           } 
+          }
           name="Redo"
           disabled={historyCache ? Array.isArray(historyCache) && historyCache.length === 0 : true}
         />
@@ -68,7 +82,7 @@ export const Footer = ({
         <Button
           variant="contained"
           color="primary"
-          className={activeRegions ? "dpfBtn" : ''}
+          className={activeRegions ? "dpfBtn" : 'dpfBtn dpfBtnDisabled'}
           disabled={!activeRegions}
           onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "reset" })}
           >
@@ -77,7 +91,7 @@ export const Footer = ({
         
         <Button variant="contained"
           color="primary"
-          className={!!activeImage.nothingToLabel ? "dpfBtn": !activeRegions ? '' : 'dpfBtn'}
+          className={!!activeImage.nothingToLabel ? "dpfBtn": !activeRegions ? 'dpfBtn dpfBtnDisabled' : 'dpfBtn'}
           disabled={!!activeImage.nothingToLabel ? false : !activeRegions} 
           onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "save" })}
           >

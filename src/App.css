@@ -161,6 +161,12 @@ background-color: #fff !important;
 box-shadow: none!important;
 
 }
+.dpfBtnDisabled {
+    /* background-color:white !important */
+border: 2px solid gray !important;
+color: gray !important;
+
+}
 
 
 .dpfBtn:hover {    

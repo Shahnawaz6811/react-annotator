@@ -4,6 +4,8 @@ import React, { useRef, useEffect, useMemo, useState } from "react"
 import { styled } from "@material-ui/core/styles"
 import useEventCallback from "use-event-callback"
 import { useSettings } from "../SettingsProvider"
+import LoadingOverlay from 'react-loading-overlay';
+import PuffLoader from 'react-spinners/PuffLoader';
 
 const Video = styled("video")({
   zIndex: 0,
@@ -46,7 +48,7 @@ export default ({
   const videoRef = useRef()
   const imageRef = useRef()
   const [error, setError] = useState()
-
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     if (!videoPlaying && videoRef.current) {
       videoRef.current.currentTime = (videoTime || 0) / 1000
@@ -101,6 +103,7 @@ export default ({
       })
   })
   const onImageLoaded = useEventCallback((event) => {
+    setLoading(false);
     const imageElm = event.currentTarget
     // debugger;
     if (onLoad)
@@ -111,6 +114,7 @@ export default ({
       })
   })
   const onImageError = useEventCallback((event) => {
+    setLoading(false);
     setError(
       `Could not load image\n\nMake sure your image works by visiting ${
         imageSrc || videoSrc
@@ -146,9 +150,23 @@ export default ({
 
   if (!videoSrc && !imageSrc)
     return <Error>No imageSrc or videoSrc provided</Error>
-
+  
   if (error) return <Error>{error}</Error>
+
   return imageSrc && videoTime === undefined ? (
+    <div>
+      <LoadingOverlay
+          className="loadingOverlay"
+				active={loading}
+        styles={{
+								overlay: (base) => ({
+									...base,
+									background: 'rgba(238, 226, 226, 0.5)',
+								}),
+							}}
+							spinner={<PuffLoader color='red'  />}
+						>
+				</LoadingOverlay>
     <StyledImage
       {...mouseEvents}
       src={imageSrc}
@@ -159,7 +177,9 @@ export default ({
       onLoad={onImageLoaded}
       onError={onImageError}
       crossOrigin={useCrossOrigin ? "anonymous" : undefined}
-    />
+      />
+    </div>
+      
   ) : (
     <Video
       {...mouseEvents}

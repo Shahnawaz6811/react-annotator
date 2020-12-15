@@ -100,9 +100,9 @@ export const MainLayout = ({
   })
 
 
-  const onRegionChange = useEventCallback((regionData,imageDimen) => {
-    // console.log('R: ', r);
-    dispatch({ type: "CHANGE_REGION_DATA",payload: {regionData,imageDimen}})
+const onRegionChange = useEventCallback((regionData) => {
+    // Persist current polygons as svg encoded data to store.
+    dispatch({ type: "CHANGE_REGION_DATA",payload: regionData})
   })
 
   const isAVideoFrame = activeImage && activeImage.frameTime !== undefined

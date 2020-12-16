@@ -174,8 +174,8 @@ const generalReducer = (state, action) => {
     
 
     case 'CHANGE_REGION_DATA': {
-      const { regionData, imageDimen } = action.payload;
-     state = setIn(state, [...pathToActiveImage, "dimen"], imageDimen)
+      // Set svg encoded data of drawn regions as regionData for current image
+      const regionData = action.payload;
        return setIn(state, [...pathToActiveImage, "region_data"], regionData)
       }
     case "CHANGE_LABEL": {

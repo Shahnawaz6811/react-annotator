@@ -199,9 +199,19 @@ export const RegionShapes = ({
   const ih = imagePosition.bottomRight.y - imagePosition.topLeft.y
   useEffect(() => {
     if (svg) {
-      var s = new XMLSerializer().serializeToString(svg); 
+      //Do this when image regions are changed
+      /**
+       * 1.Clone svg dom node. (regions are drawn as svg's path)
+       * 2.Reset top and left set by pan control to 0
+       * 3.Serialize and encode cloned node to string  
+       * 4.Persist encoded svg data to store
+       *  */   
+      var newSvg = svg.cloneNode(true);
+      newSvg.style.top= '0px'
+      newSvg.style.left = '0px'
+      var s = new XMLSerializer().serializeToString(newSvg); 
       var encodedData = window.btoa(s);
-      onRegionChange(encodedData,{width:iw,height:ih});          
+      onRegionChange(encodedData);          
     }
   },[regions]);
   

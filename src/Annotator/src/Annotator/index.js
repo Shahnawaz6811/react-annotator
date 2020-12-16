@@ -38,7 +38,10 @@ type Props = {
   pointDistancePrecision?: number,
   RegionEditLabel?: Node,
   onSubmit: (MainLayoutState) => any,
-  onSave: (Object) => any,
+  onSave: (Image,string) => any,
+  useHistory: () => Object,
+  renderError: () => any,
+  jobName?:string,
   videoTime?: number,
   videoSrc?: string,
   keyframes?: Object,
@@ -61,11 +64,13 @@ export const Annotator = ({
   enabledTools = [
     "pan",
     "zoom-in",
+    "zoom-out",
+    "brightness",
+    "contrast",
+    "inverse",
     "polygon",
-    "show-mask",
-    "free-hand"
+    "draw"
   ],
-  renderError,
   selectedTool = "pan",
   jobName="",
   regionTagList = [],
@@ -81,6 +86,7 @@ export const Annotator = ({
   videoName,
   onSubmit,
   onSave,
+  renderError,
   useHistory,
   onNextImage,
   onPrevImage,
@@ -140,17 +146,17 @@ export const Annotator = ({
 
   const dispatch = useEventCallback((action: Action) => {
     if (action.type === "FOOTER_BUTTON_CLICKED") {
-      // console.log('Footer');
+      // Handle Footer button events 
+
       if (action.buttonName === "submit") {
+        //Handle event when submit is clicked
         return onSubmit(without(state, "history"))
       }
 
-     
       else if (action.buttonName === "save") {
-        
+        // Handle event when save is clicked
         const image = state.images[state.selectedImage];
-        // console.log("Image: ", image)
-        
+
         //Create white canvas with original image dimen
         var canvas = document.createElement("canvas");
         canvas.width = image.pixelSize.w
@@ -158,34 +164,31 @@ export const Annotator = ({
         var ctx = canvas.getContext("2d");
         ctx.fillStyle = "white";
         ctx.fillRect(0, 0, canvas.width, canvas.height);
-        // console.log("Canvas Dimen", canvas.width, canvas.height);
-
-
 
         if (!image.region_data || image.nothingToLabel) {
-          // console.log("No data");
-          //return blank canvas data if image has no regions.
+
+          /**
+           * Return blank canvas data if. 
+           * 1. if image has no regions
+           * 2. if image has nothing to label
+           */
           return onSave(image,canvas.toDataURL("image/png"))
         }
        
-        // Draw image on canvas 
+        // Create image with region data.
         var img = document.createElement("img");
         img.setAttribute("src", "data:image/svg+xml;base64," + image.region_data);
         
         img.onload = function () {
-          ctx.drawImage(img, 0, 0,canvas.width,canvas.height);
-          // console.log('ImageData', canvas.toDataURL("image/png"))
+          //  Draw image on white canvas 
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+          
           return onSave(image,canvas.toDataURL("image/png"))
          };
       }
-        //   return onNextImage(without(state, "history"))
-        // }
-      // else if (action.buttonName === "Next" && onNextImage) {
-      //   return onNextImage(without(state, "history"))
-      // } else if (action.buttonName === "Prev" && onPrevImage) {
-      //   return onPrevImage(without(state, "history"))
-      // }
+
     }
+    // Dispatch action except handled above to reducer
     dispatchToReducer(action)
   })
 
@@ -196,14 +199,14 @@ export const Annotator = ({
     })
   })
 
-  // useEffect(() => {
-  //   if (selectedImage === undefined) return
-  //   dispatchToReducer({
-  //     type: "SELECT_IMAGE",
-  //     imageIndex: selectedImage,
-  //     image: state.images[selectedImage],
-  //   })
-  // }, [selectedImage])
+  useEffect(() => {
+    if (selectedImage === undefined) return
+    dispatchToReducer({
+      type: "SELECT_IMAGE",
+      imageIndex: selectedImage,
+      image: state.images[selectedImage],
+    })
+  }, [selectedImage])
 
   if (!images && !videoSrc)
     return 'Missing required prop "images" or "videoSrc"'

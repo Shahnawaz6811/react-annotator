@@ -113,11 +113,14 @@ export const getIcon = (name, selected) => {
 
     case 'Prev':
       return <Previous
+        style={selected ? {fill:'gray',cursor:'default'}: {}}
         className={selected ? 'selected' : ''} />;
 
 
     case 'Next':
       return <Next
+        style={selected ? {fill:'gray',cursor:'default'}: {}}
+
         className={selected ? 'selected' : ''}
       />;
   }

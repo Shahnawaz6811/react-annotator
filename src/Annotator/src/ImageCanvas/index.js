@@ -109,6 +109,7 @@ export const ImageCanvas = ({
   onMouseMove = (p) => null,
   onMouseDown = (p) => null,
   onMouseUp = (p) => null,
+  loader,
   dragWithPrimary = false,
   zoomWithPrimary = false,
   createWithPrimary = false,
@@ -177,7 +178,7 @@ export const ImageCanvas = ({
     onMouseUp,
   })
 
- 
+
   useLayoutEffect(() => changeMat(mat.clone()), [windowSize])
 
   const innerMousePos = mat.applyToPoint(
@@ -201,9 +202,9 @@ export const ImageCanvas = ({
     }
   )
 
-  
 
-  
+
+
 
   const excludePattern = useExcludePattern()
 
@@ -239,21 +240,21 @@ export const ImageCanvas = ({
       )
     )
     onNewImageLoaded(mouseEvents)
-    
+
     // eslint-disable-next-line
   }, [imageLoaded])
 
   useLayoutEffect(() => {
     if (!imageDimensions) return
     const { clientWidth, clientHeight } = canvas
-    
+
     const context = canvas.getContext("2d")
 
     context.save()
     context.transform(...mat.clone().inverse().toArray())
 
     const { iw, ih } = layoutParams.current
-    
+
     if (allowedArea) {
       // Pattern to indicate the NOT allowed areas
       const { x, y, w, h } = allowedArea
@@ -476,6 +477,7 @@ export const ImageCanvas = ({
             mouseEvents={mouseEvents}
             onLoad={onVideoOrImageLoaded}
             videoTime={videoTime}
+            loader={loader}
             videoSrc={videoSrc}
             activeImage={activeImage}
             imageSrc={imageSrc}

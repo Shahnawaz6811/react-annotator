@@ -58,6 +58,7 @@ type Props = {
 export const MainLayout = ({
   state,
   dispatch,
+  loader,
   alwaysShowNextButton = false,
   alwaysShowPrevButton = false,
   RegionEditLabel,
@@ -123,6 +124,7 @@ const onRegionChange = useEventCallback((regionData) => {
   const canvas = (
     <ImageCanvas
       {...settings}
+      loader={loader}
       showCrosshairs={
         settings.showCrosshairs &&
         !["select", "pan", "zoom"].includes(state.selectedTool)
@@ -145,7 +147,7 @@ const onRegionChange = useEventCallback((regionData) => {
       activeImage={activeImage}
       realSize={activeImage ? activeImage.realSize : undefined}
       videoPlaying={state.videoPlaying}
-      onNewImageLoaded={(events) => { 
+      onNewImageLoaded={(events) => {
         dispatch({type:'IMAGE_LOADED',loading:false})
         setMouseEvents(events)
       }}
@@ -212,10 +214,10 @@ const onClickToolbarItem = useEventCallback((item) => {
         // alert("Please select any label");
         renderError('Please select any label')
         return;
-      } 
+      }
     }
   }
-  
+
     dispatch({ type: "SELECT_TOOL", selectedTool: item.name })
   })
 
@@ -265,11 +267,10 @@ const onClickFooterItem = useEventCallback((item) => {
     !nextImage || (nextImage.regions && nextImage.regions.length > 0)
 
   return (
-    <FullScreenContainer>    
+    <FullScreenContainer>
           <Workspace
         iconDictionary={iconDictionary}
         useHistory={useHistory}
-      
         activeImage={activeImage}
         dispatch={dispatch}
         onSelectLabel={onSelectLabel}
@@ -302,7 +303,7 @@ const onClickFooterItem = useEventCallback((item) => {
               state.selectedTool
             }
         toolbarItems={[
-         
+
             {
                 name: "pan",
                 helperText: "Drag/Pan",
@@ -313,7 +314,7 @@ const onClickFooterItem = useEventCallback((item) => {
                 helperText: "Zoom In",
                 alwaysShowing: true,
               },
-              
+
               {
                 name: "zoom-out",
                 helperText: "Zoom Out",
@@ -344,14 +345,14 @@ const onClickFooterItem = useEventCallback((item) => {
                 helperText: "Free Hand",
                 alwaysShowing: true,
               },
-              
+
             ]
               .filter(Boolean)
               .filter(
                 (a) => a.alwaysShowing || state.enabledTools.includes(a.name)
               )}
               imageSelector={[
-             
+
           ((state.images && state.images.length) || 0) > 1 && (
                   <ImageSelector
                   useHistory={useHistory}
@@ -366,7 +367,7 @@ const onClickFooterItem = useEventCallback((item) => {
                   images={state.images}
                 />
               ),
-              
+
             ].filter(Boolean)}
           >
             {canvas}

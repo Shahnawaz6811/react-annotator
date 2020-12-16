@@ -124,7 +124,7 @@ const generalReducer = (state, action) => {
     case "SELECT_IMAGE": {
       return setNewImage(action.image, action.imageIndex)
     }
-    
+
     case 'SELECT_LABEL': {
       // console.log("State: ", state);
       const selectedLabel = action.selectedLabel;
@@ -171,7 +171,7 @@ const generalReducer = (state, action) => {
       state = setIn(state, [...pathToActiveImage, "loading"], loading)
       return state;
     }
-    
+
 
     case 'CHANGE_REGION_DATA': {
       // Set svg encoded data of drawn regions as regionData for current image
@@ -183,14 +183,14 @@ const generalReducer = (state, action) => {
       if (!label || activeImage.regions.length === 0) {
         return state;
       }
-      
+
 
       // Check if image has regions associated to this label
       const hasRegions = [...(activeImage.regions || [])].find((r) => r.cls === label.cls);
       if (!hasRegions) {
         return state;
       }
-      
+
 
       const regions = [...(activeImage.regions || [])].map((r) => {
         if (r.cls === label.cls) {
@@ -515,7 +515,7 @@ const generalReducer = (state, action) => {
 
 
       state = setIn(state, ["mouseDownAt"], { x, y })
-      
+
       if (state.mode) {
         switch (state.mode.mode) {
           case "DRAW_POLYGON": {
@@ -833,7 +833,7 @@ const generalReducer = (state, action) => {
         editingLabels: false,
       })
     }
-      
+
     case 'CLICK_LABEL': {
       const label = state.images[currentImageIndex].label;
       return setIn(
@@ -876,7 +876,7 @@ const generalReducer = (state, action) => {
       const buttonName = action.buttonName.toLowerCase()
       switch (buttonName) {
         case "undo": {
-          
+
           // console.log("Original State: ", state);
           // Check if current image has active regions to undo
           if (activeImage.regions && activeImage.regions.length > 0) {
@@ -884,12 +884,12 @@ const generalReducer = (state, action) => {
             // get last region inserted to active image
            let lastRegionAddedToActiveImage = getIn(state,
             [...pathToActiveImage, "regions",activeImage.regions.length - 1])
-         
+
 
             //Remove last region inserted to active image
-            state = 
-            setIn(state,[...pathToActiveImage, "regions"], activeImage.regions.filter((element, index) => index < activeImage.regions.length - 1)) 
-            
+            state =
+            setIn(state,[...pathToActiveImage, "regions"], activeImage.regions.filter((element, index) => index < activeImage.regions.length - 1))
+
              // Cache last active image region to historyCache
             let historyCacheForActiveImage = getIn(state, ['historyCache', activeImage.name]);
             if (historyCacheForActiveImage) {
@@ -900,7 +900,7 @@ const generalReducer = (state, action) => {
               historyCacheForActiveImage.push(lastRegionAddedToActiveImage)
             }
             state =  setIn(state, ['historyCache', activeImage.name], historyCacheForActiveImage);
-        
+
           }
           return state;
         }
@@ -908,27 +908,27 @@ const generalReducer = (state, action) => {
 
           // Check if we have regions in cache  to redo
           if (state.historyCache && state.historyCache[activeImage.name] && state.historyCache[activeImage.name].length > 0) {
-            
+
             // get last item inserted to history cache
             // let lastRegionAddedToCache = getIn(state,
             //   ["historyCache", state.historyCache.length - 1]);
             let lastRegionAddedToCache = state.historyCache[activeImage.name][state.historyCache[activeImage.name].length - 1];
 
             // remove last item from history cache.
-            state = 
+            state =
               setIn(state, ['historyCache', activeImage.name], state.historyCache[activeImage.name].filter((element, index) => index < state.historyCache[activeImage.name].length - 1))
 
 
             // console.log("lastRegionAddedToCache", lastRegionAddedToCache)
             // redo active image regions with last item popped from history cache
-            state = 
+            state =
             setIn(state,[...pathToActiveImage, "regions",activeImage.regions.length],  lastRegionAddedToCache)
             // return state.historyCache[0];
             // console.log("After redoing regions ", state);
-           
+
           }
           return state;
-          
+
         }
         case 'reset': {
           // console.log('Before reset: ', state);
@@ -936,22 +936,22 @@ const generalReducer = (state, action) => {
             let historyCacheForActiveImage = getIn(state, ['historyCache', activeImage.name]);
             if (historyCacheForActiveImage && historyCacheForActiveImage.length > 0) {
              // clear history cache for current image.
-            state = 
+            state =
               setIn(state,['historyCache',activeImage.name], [])
             }
-            state = 
+            state =
               setIn(state,['historyCache',activeImage.name], activeImage.regions)
 
-            state = 
+            state =
               setIn(state,
                 [...pathToActiveImage, "regions"],
                 [])
           }
-          
+
             // state = setIn(state.history[state.history.length - 1].state, ['history'], []);
             // console.log("After reset", state);
-          
-      
+
+
           return state;
         }
         case "prev": {
@@ -983,7 +983,7 @@ const generalReducer = (state, action) => {
         !nothingToLabel
       )
         }
-        
+
         case "clone": {
           if (currentImageIndex === null) return state
           if (currentImageIndex === state.images.length - 1) return state
@@ -1021,9 +1021,9 @@ const generalReducer = (state, action) => {
       }
       break;
     }
-   
+
     case "UPDATE_FILTER": {
-        
+
       // return setIn(state, ["zoomOut"], !state.zoomOut)
       // console.log('Action:',action.payload.value);
       let filter = getIn( state,
@@ -1041,7 +1041,7 @@ const generalReducer = (state, action) => {
       )
 
       return newState;
-        
+
     }
     case "SELECT_TOOL": {
       state = setIn(state, ["selectedTool"], action.selectedTool)
@@ -1056,9 +1056,9 @@ const generalReducer = (state, action) => {
         state,
         [...pathToActiveImage, "filter"],
         {...filter,inverse: filter.inverse == 0 ? 100:0}
-      )      
+      )
       }
-    
+
        if (action.selectedTool === "zoom-in") {
         state =  setIn(state, ["zoomOut"], !state.zoomOut)
       }

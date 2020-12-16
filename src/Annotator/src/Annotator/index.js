@@ -55,6 +55,7 @@ type Props = {
 
 export const Annotator = ({
   images,
+  loader,
   allowedArea,
   selectedImage = images && images.length > 0 ? 0 : undefined,
   showPointDistances,
@@ -122,7 +123,6 @@ export const Annotator = ({
       regionClsList,
       regionTagList,
       imageClsList,
-
       imageTagList,
       currentVideoTime: videoTime,
       enabledTools,
@@ -146,7 +146,7 @@ export const Annotator = ({
 
   const dispatch = useEventCallback((action: Action) => {
     if (action.type === "FOOTER_BUTTON_CLICKED") {
-      // Handle Footer button events 
+      // Handle Footer button events
 
       if (action.buttonName === "submit") {
         //Handle event when submit is clicked
@@ -168,21 +168,21 @@ export const Annotator = ({
         if (!image.region_data || image.nothingToLabel) {
 
           /**
-           * Return blank canvas data if. 
+           * Return blank canvas data if.
            * 1. if image has no regions
            * 2. if image has nothing to label
            */
           return onSave(image,canvas.toDataURL("image/png"))
         }
-       
+
         // Create image with region data.
         var img = document.createElement("img");
         img.setAttribute("src", "data:image/svg+xml;base64," + image.region_data);
-        
+
         img.onload = function () {
-          //  Draw image on white canvas 
+          //  Draw image on white canvas
           ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          
+
           return onSave(image,canvas.toDataURL("image/png"))
          };
       }
@@ -218,6 +218,7 @@ export const Annotator = ({
         alwaysShowNextButton={Boolean(onNextImage)}
         alwaysShowPrevButton={Boolean(onPrevImage)}
         state={state}
+        loader={loader}
         useHistory={useHistory}
         renderError={renderError}
         dispatch={dispatch}

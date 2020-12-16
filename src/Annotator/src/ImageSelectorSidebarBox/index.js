@@ -10,85 +10,64 @@ import ListItem from "@material-ui/core/ListItem"
 import ListItemText from "@material-ui/core/ListItemText"
 import Avatar from "@material-ui/core/Avatar"
 import isEqual from "lodash/isEqual"
-import {Link } from 'react-router-dom';
+import {Link,useParams,useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles({
   img: { width: 170, height: 40, marginLeft:30, borderRadius: 8 },
 })
 
 export const ImageSelectorSidebarBox = ({ images, onSelect,state,useHistory }) => {
-  const classes = useStyles()
-  // console.log("Selected", images);
   const history = useHistory();
   const jobName = state.jobName;
-  // console.log("history: ", history);
-  const { location: { pathname } } = history;
+  const {job,asset} = useParams();
 
 
+  const handleRouteChange = () => {
+      if (asset) {
+        // Check if we have given asset in images store
+        let imageIndex = images.findIndex(image => image.name === asset);
 
-  useLayoutEffect(() => {
-    // console.log("history: ", history);
-    if (pathname) {
-      let imageName = pathname.split('/')[2];
-      if (imageName) {
-        let imageIndex = images.findIndex(image => image.name === imageName);
-
-        if (imageIndex > 0) {
+        if (imageIndex >= 0) {
+          // Update current asset to asset matched
           setTimeout(() => {
             onSelect(images[imageIndex], imageIndex)
-          }, 2);
+          }, 0);
         } else {
-          // Invalid image
+          // No asset found in images store, fallback to 1st image.
           history.push(images[0].name)
         }
       }
       else {
-        const job = pathname.split('/')[1];
-        // console.log('JOb',job)
-        if (job) {
-          history.push(images[0].name)
-        } else {
-          history.push(`${jobName}/${images[0].name}`)
-        }
+        // No asset is given, fallback to 1st image
+        history.push(images[0].name)
       }
-    }
-  },[])
+  }
 
   useEffect(() => {
+    /**
+       * Do this once just before component is mounted.
+       * 1. Check if annotator has asset in search params
+       * 2. Set the annotator selected image to matched image.
+       * 3.Otherwise fallback to set first image
+       * 4.Set first image of annotator as selected image if no asset name is given.
+       *  */
+    handleRouteChange();
 
-    const { location: { pathname } } = history;
-
-    // console.log("History: ", history.location);
+    // Listen for back button navigation
     history.listen(() => {
-      // console.log("Listeningg",history.location.key);
-      // console.log("Listeningg", history.location);
-      const { location: { pathname } } = history;
-      // console.log("Path: ", pathname);
-      if (pathname) {
-        let imageName = pathname.split('/')[2];
-        if (imageName) {
-          // Check if we have image of given name
-          let imageIndex = images.findIndex(image => image.name === imageName);
-          // console.log('INdex: ', imageIndex);
-          if (imageIndex > 0) {
-          // console.log("Exis:", imageIndex);
-           onSelect(images[imageIndex], imageIndex)
-          }
-
-        } else {
-          const job = pathname.split('/')[1];
-          if (job) {
-            history.push(images[0].name)
-            onSelect(images[0], 0)
-          }else{
-          history.push(`${jobName}/${images[0].name}`)
-
-          }
+       const { location: { pathname } } = history;
+      let assetName = pathname.split('/')[3];
+      if(assetName) {
+        let imageIndex = images.findIndex(image => image.name === assetName);
+        if(imageIndex >= 0) {
+          onSelect(images[imageIndex], imageIndex)
+        }else{
+          onSelect(images[0], 0)
         }
       }
+    });
+  },[])
 
-    })
-  }, []);
 
 
   return (
@@ -102,7 +81,7 @@ export const ImageSelectorSidebarBox = ({ images, onSelect,state,useHistory }) =
           {images.map((img, i) => (
             <Link
 
-              to={`${jobName}/${img.name}`}
+              to={`/annotate/${jobName}/${img.name}`}
               className={
                 `imageListItem ${i === state.selectedImage ? 'imageSelectItem' : ''}`
               }

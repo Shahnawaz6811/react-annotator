@@ -1,6 +1,7 @@
 import React from 'react'
 // import Annotator from '@rediminds/image-video-annotator'
-import Annotator from '../Annotator/src/Annotator';
+// import Annotator from '@shahnawaz6811/react-annotator'
+import Annotator from '../annotator';
 import { images, labels } from './images'
 import { Route, useHistory, useParams } from 'react-router-dom';
 import ImageLoader from './ImageLoader';

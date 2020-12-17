@@ -159,14 +159,23 @@ height: 26px;
 padding: 0!important;
 background-color: #fff !important;
 box-shadow: none!important;
-
 }
 .dpfBtnDisabled {
     /* background-color:white !important */
-border: 2px solid gray !important;
-color: gray !important;
+border: 2px solid gray!important;
 
+    color: gray!important;
+    font-weight: 500 !important;
+font-size: 12px!important;
+min-width: 94px;
+height: 26px;
+padding: 0!important;
+background-color: #fff !important;
+box-shadow: none!important;
+cursor: auto !important;
 }
+
+
 
 
 .dpfBtn:hover {
@@ -202,11 +211,26 @@ color: gray !important;
       fill:#81CDBA;
       cursor: pointer;
 }
-.imgNavigation:hover  svg:hover
+.imgNavigation:hover svg:hover
 {
       fill:#EA203E;
 }
 
+.imgNavigation:hover .disabled svg:hover
+{
+      fill:gray;
+}
+
+.imgNavigation .disabled svg
+{
+      fill:gray;
+}
+
+.imgNavigation .disabled svg:hover
+{
+      fill:gray;
+      cursor: auto;
+}
 
 .loadingOverlay {
     width: 100%;

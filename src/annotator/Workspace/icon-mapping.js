@@ -111,18 +111,18 @@ export const getIcon = (name, selected) => {
     case 'Redo':
       return <ReactSVG src={Redo}
         style={selected ? {fill:'gray',cursor:'default'}: {}}
-        className={selected ? 'selected' : ''} />;
+        className={selected ? 'disabled' : ''} />;
 
     case 'Prev':
       return <ReactSVG src={Previous}
         style={selected ? {fill:'gray',cursor:'default'}: {}}
-        className={selected ? 'selected' : ''} />;
+        className={selected ? 'disabled' : ''} />;
 
 
     case 'Next':
       return <ReactSVG src={Next}
         style={selected ? {fill:'gray',cursor:'default'}: {}}
-        className={selected ? 'selected' : ''}
+        className={selected ? 'disabled' : ''}
       />;
   }
 }

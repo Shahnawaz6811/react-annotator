@@ -10,15 +10,11 @@ import { getIcon } from "../../icon-mapping.js"
 export const FooterButton = ({ name, disabled, onClick }) => {
 
   return (
-    <div onClick={onClick}  className="imgNavigation">
-      {getIcon(name,disabled)}
+    <div onClick={onClick} className="imgNavigation">
+      {getIcon(name, disabled)}
     </div>
   )
 }
-
-
-
-
 
 
 const Container = styled("div")({
@@ -26,19 +22,19 @@ const Container = styled("div")({
   display: "flex",
   backgroundColor: "#fff",
   alignItems: "center",
-  justifyContent:'space-between',
+  justifyContent: 'space-between',
   flexShrink: 1,
-  margin:'0 auto',
+  margin: '0 auto',
   boxSizing: "border-box",
 })
 
 type Props = {|
   leftSideContent?: ?React.Node,
-  onClickItem?: Function,
-  items: Array<{|
-    name: string,
-    icon?: ?React.Node,
-    onClick?: Function,
+    onClickItem ?: Function,
+    items: Array < {|
+      name: string,
+        icon ?: ? React.Node,
+        onClick ?: Function,
   |}>,
 |}
 
@@ -54,22 +50,26 @@ export const Footer = ({
   let activeImage = state.images[currentImageIndex];
   let activeRegions = activeImage.regions.length > 0;
   let historyCache = state.historyCache[activeImage.name];
+  const ifJobHasInValidAsset = state.images.filter(image =>
+    image.nothingToLabel !== true && image.regions.length === 0).length === 0;
+  let shouldEnableSubmitBtn = currentImageIndex === state.images.length - 1 && ifJobHasInValidAsset;
+
 
   return (
     <div className="canvasNavigation" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
 
 
-    <Container>
+      <Container>
 
-      <FooterButton
+        <FooterButton
           onClick={() => {
             if (!activeRegions) {
               return
             }
             dispatch({
-                type: "FOOTER_BUTTON_CLICKED",
-                buttonName: "Undo",
-          })
+              type: "FOOTER_BUTTON_CLICKED",
+              buttonName: "Undo",
+            })
           }
 
           }
@@ -77,17 +77,17 @@ export const Footer = ({
           disabled={!activeRegions}
         />
 
-      <FooterButton
+        <FooterButton
           onClick={() => {
             const disabled = historyCache ? Array.isArray(historyCache) && historyCache.length === 0 : true;
             if (disabled) {
               return
             }
             dispatch({
-                type: "FOOTER_BUTTON_CLICKED",
-                buttonName: "redo",
+              type: "FOOTER_BUTTON_CLICKED",
+              buttonName: "redo",
             })
-           }
+          }
           }
           name="Redo"
           disabled={historyCache ? Array.isArray(historyCache) && historyCache.length === 0 : true}
@@ -98,41 +98,43 @@ export const Footer = ({
           color="primary"
           className={activeRegions ? "dpfBtn" : 'dpfBtn dpfBtnDisabled'}
           disabled={!activeRegions}
-          onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "reset" })}
-          >
+          onClick={() => dispatch({ type: "FOOTER_BUTTON_CLICKED", buttonName: "reset" })}
+        >
           Reset
       </Button>
 
         <Button variant="contained"
           color="primary"
-          className={!!activeImage.nothingToLabel ? "dpfBtn": !activeRegions ? 'dpfBtn dpfBtnDisabled' : 'dpfBtn'}
+          className={!!activeImage.nothingToLabel ? "dpfBtn" : !activeRegions ? 'dpfBtn dpfBtnDisabled' : 'dpfBtn'}
           disabled={!!activeImage.nothingToLabel ? false : !activeRegions}
-          onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "save" })}
-          >
-        Save
+          onClick={() => dispatch({ type: "FOOTER_BUTTON_CLICKED", buttonName: "save" })}
+        >
+          Save
       </Button>
-      <FormControlLabel
-        control={
+        <FormControlLabel
+          control={
             <Checkbox
-          className="dpfDrawLabel"
+              className="dpfDrawLabel"
 
-            checked={activeImage.nothingToLabel ? true: false}
-            onChange={() => dispatch({
+              checked={activeImage.nothingToLabel ? true : false}
+              onChange={() => dispatch({
                 type: "FOOTER_BUTTON_CLICKED",
                 buttonName: "nolabel",
               })}
-            name="checkedB"
-            color="primary"
-          />
-        }
-        label="Nothing to label"
-      />
+              name="checkedB"
+              color="primary"
+            />
+          }
+          label="Nothing to label"
+        />
         <Button variant="contained"
-          className="dpfSubmitbtn"
-          onClick={() => dispatch({type: "FOOTER_BUTTON_CLICKED",buttonName: "submit" })}
-          disabled={!activeRegions} color="primary"
-          >
-        Submit
+          // className="dpfSubmitbtn"
+          className={shouldEnableSubmitBtn ? "dpfBtn" : 'dpfBtnDisabled'}
+          onClick={() => dispatch({ type: "FOOTER_BUTTON_CLICKED", buttonName: "submit" })}
+          disabled={!shouldEnableSubmitBtn}
+          color="primary"
+        >
+          Submit
       </Button>
 
 

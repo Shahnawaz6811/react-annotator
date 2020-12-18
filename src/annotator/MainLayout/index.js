@@ -302,8 +302,9 @@ const onClickFooterItem = useEventCallback((item) => {
                   state={state}
                   onSelect={(img, position) => {
                     dispatch({
-                      type: "UPDATE_IMAGE_CANVAS",
-                      payload: { img, position },
+                      type: "SELECT_IMAGE",
+                      imageIndex:position,
+                      image:  img ,
                     })
                   }}
                   images={state.images}

@@ -192,6 +192,7 @@ const onChangeObject = useEventCallback((r) => {
 const onSelectObject = useEventCallback((r) => {
     // console.log('R: ', r);
     dispatch({ type: "SELECT_REGION", region: r })
+    dispatch({type:'SELECT_TOOL',selectedTool: 'polygon'})
 })
 const onDeleteObject = useEventCallback((r) => {
   // console.log('R: ', r);
@@ -214,6 +215,7 @@ const onSubmit = useEventCallback(() => {
 })
 
 const onClickFooterItem = useEventCallback((item) => {
+
     dispatch({ type: "FOOTER_BUTTON_CLICKED", buttonName: item.name })
   })
 

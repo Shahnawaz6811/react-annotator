@@ -59,6 +59,7 @@ export const Annotator = ({
   selectedImage = images && images.length > 0 ? 0 : undefined,
   showPointDistances,
   pointDistancePrecision,
+  selectedImageRegion=[],
   showTags = true,
   history,
   enabledTools = [
@@ -206,6 +207,15 @@ export const Annotator = ({
       image: state.images[selectedImage],
     })
   }, [selectedImage])
+
+  useEffect(() => {
+    if (selectedImage === undefined) return
+     dispatchToReducer({
+      type: "UPDATE_IMAGE_REGIONS",
+      regions: selectedImageRegion,
+      imageIndex: selectedImage,
+    })
+  },[])
 
   if (!images && !videoSrc)
     return 'Missing required prop "images" or "videoSrc"'

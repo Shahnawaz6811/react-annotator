@@ -110,11 +110,12 @@ const generalReducer = (state, action) => {
 
   const setNewImage = (img: string | Object, index: number) => {
     let { src, frameTime } = typeof img === "object" ? img : { src: img }
-    return setIn(
+    state=  setIn(
       setIn(state, ["selectedImage"], index),
       ["selectedImageFrameTime"],
       frameTime
     )
+      return state;
   }
 
   switch (action.type) {
@@ -123,6 +124,14 @@ const generalReducer = (state, action) => {
     }
     case "SELECT_IMAGE": {
       return setNewImage(action.image, action.imageIndex)
+    }
+
+    case "UPDATE_IMAGE_REGIONS": {
+      const {regions} = action;
+      return setIn(
+        state,
+        ['images', currentImageIndex, 'regions'],regions
+      )
     }
 
     case 'SELECT_LABEL': {

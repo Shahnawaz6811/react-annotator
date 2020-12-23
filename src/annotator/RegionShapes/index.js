@@ -20,7 +20,7 @@ const RegionComponents = {
           .join(" ")}
         strokeWidth={0}
         stroke={colorAlpha(region.color, 0.75)}
-        fill={colorAlpha(region.color, 0.25)}
+        fill={colorAlpha(region.color, 0.75)}
       />
     )
   })

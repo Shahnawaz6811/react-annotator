@@ -1,6 +1,4 @@
 import React from 'react'
-// import Annotator from '@rediminds/image-video-annotator'
-// import Annotator from '@shahnawaz6811/react-annotator'
 import Annotator from '../annotator';
 import { images, labels } from './images'
 import { Route, useHistory, useParams } from 'react-router-dom';
@@ -14,8 +12,8 @@ const AppAnnotator = (props) => {
     return (
         <div>
             <Annotator
-            images={images}
-            loader={ImageLoader}
+                images={images}
+                loader={ImageLoader}
                 regionClsList={labels}
                 jobName="Dr-John-De"
                 renderError={(error) => {}}
